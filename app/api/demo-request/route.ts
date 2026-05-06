@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (dbError) {
-      console.error("Supabase insert error:", dbError);
+      console.error("Supabase insert error:", JSON.stringify(dbError, null, 2));
       return NextResponse.json(
         { error: "Failed to save request" },
         { status: 500 }
