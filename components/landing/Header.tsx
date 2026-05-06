@@ -74,7 +74,7 @@ const Header = ({ onOpenDemo }: HeaderProps) => {
             </a>
           ))}
           <Link
-            to="/compare/caseware"
+            href="/compare/caseware"
             className="text-sm text-foreground/75 hover:text-foreground transition-colors"
           >
             Compare
@@ -110,7 +110,7 @@ const Header = ({ onOpenDemo }: HeaderProps) => {
               </a>
             ))}
             <Link
-              to="/compare/caseware"
+              href="/compare/caseware"
               onClick={() => setMobileOpen(false)}
               className="text-sm text-foreground/80 hover:text-foreground transition-colors"
             >
