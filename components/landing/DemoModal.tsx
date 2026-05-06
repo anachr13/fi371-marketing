@@ -56,7 +56,7 @@ const DemoModal = ({ open, onClose }: DemoModalProps) => {
 
   if (!open) return null;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = schema.safeParse(form);
     if (!result.success) {
@@ -69,10 +69,37 @@ const DemoModal = ({ open, onClose }: DemoModalProps) => {
     }
     setErrors({});
     setSubmitting(true);
-    setTimeout(() => {
+
+    try {
+      const res = await fetch("/api/demo-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: form.name,
+          workEmail: form.email,
+          company: form.company,
+          firmSize: form.firmSize,
+          note: form.note || undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        if (data.fields) {
+          setErrors(data.fields);
+        } else {
+          setErrors({ name: "Something went wrong. Please try again." });
+        }
+        setSubmitting(false);
+        return;
+      }
+
       setSubmitting(false);
       setSubmitted(true);
-    }, 900);
+    } catch {
+      setErrors({ name: "Network error. Please try again." });
+      setSubmitting(false);
+    }
   };
 
   const update = (key: keyof typeof initial, value: string) => {

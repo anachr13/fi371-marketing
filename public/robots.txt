@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fi371.com/sitemap.xml

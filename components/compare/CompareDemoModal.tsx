@@ -24,14 +24,42 @@ const CompareDemoModal = ({ open, onClose }: CompareDemoModalProps) => {
 
   if (!open) return null;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => {
+
+    const formData = new FormData(e.currentTarget);
+    const name = (document.getElementById("cmp-name") as HTMLInputElement)?.value || "";
+    const email = (document.getElementById("cmp-email") as HTMLInputElement)?.value || "";
+    const company = (document.getElementById("cmp-company") as HTMLInputElement)?.value || "";
+    const note = (document.getElementById("cmp-note") as HTMLTextAreaElement)?.value || "";
+
+    try {
+      const res = await fetch("/api/demo-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: name,
+          workEmail: email,
+          company,
+          firmSize: "unknown",
+          note: note || undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        toast.error("Something went wrong. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+
       setSubmitting(false);
       toast.success("Demo request submitted! We'll be in touch shortly.");
       onClose();
-    }, 1200);
+    } catch {
+      toast.error("Network error. Please try again.");
+      setSubmitting(false);
+    }
   };
 
   return (
