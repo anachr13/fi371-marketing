@@ -114,34 +114,34 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
       className="fixed inset-0 z-[200] flex items-center justify-center bg-foreground/60 backdrop-blur-sm"
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
-      <div className="bg-background border border-border rounded-xl p-10 w-full max-w-[480px] mx-6 relative">
+      <div className="bg-background border border-border rounded-xl p-[50px] w-full max-w-[600px] mx-8 relative">
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-xl px-2"
+          className="absolute top-5 right-5 text-muted-foreground hover:text-foreground text-2xl px-2.5"
         >
           &times;
         </button>
 
         {!submitted ? (
           <>
-            <h3 className="font-display text-[28px] mb-1">Book a demo</h3>
-            <p className="text-sm text-muted-foreground mb-8">30-minute walkthrough tailored to your firm&apos;s workflow. No commitment.</p>
+            <h3 className="font-display text-[35px] mb-1">Book a demo</h3>
+            <p className="text-[17px] text-muted-foreground mb-10">30-minute walkthrough tailored to your firm&apos;s workflow. No commitment.</p>
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-[13px] font-medium mb-1">Full name</label>
-                <input className="w-full px-3.5 py-2.5 bg-background border-2 border-border rounded-lg text-[15px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" placeholder="Jane Smith" required value={name} onChange={(e) => setName(e.target.value)} />
+              <div className="mb-5">
+                <label className="block text-base font-medium mb-1">Full name</label>
+                <input className="w-full px-[18px] py-3 bg-background border-2 border-border rounded-lg text-[19px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" placeholder="Jane Smith" required value={name} onChange={(e) => setName(e.target.value)} />
               </div>
-              <div className="mb-4">
-                <label className="block text-[13px] font-medium mb-1">Work email</label>
-                <input className="w-full px-3.5 py-2.5 bg-background border-2 border-border rounded-lg text-[15px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" type="email" placeholder="jane@yourfirm.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <div className="mb-5">
+                <label className="block text-base font-medium mb-1">Work email</label>
+                <input className="w-full px-[18px] py-3 bg-background border-2 border-border rounded-lg text-[19px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" type="email" placeholder="jane@yourfirm.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
-              <div className="mb-4">
-                <label className="block text-[13px] font-medium mb-1">Firm name</label>
-                <input className="w-full px-3.5 py-2.5 bg-background border-2 border-border rounded-lg text-[15px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" placeholder="Smith & Associates" value={company} onChange={(e) => setCompany(e.target.value)} />
+              <div className="mb-5">
+                <label className="block text-base font-medium mb-1">Firm name</label>
+                <input className="w-full px-[18px] py-3 bg-background border-2 border-border rounded-lg text-[19px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" placeholder="Smith & Associates" value={company} onChange={(e) => setCompany(e.target.value)} />
               </div>
-              <div className="mb-4">
-                <label className="block text-[13px] font-medium mb-1">Firm size</label>
-                <select className="w-full px-3.5 py-2.5 bg-background border-2 border-border rounded-lg text-[15px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" value={firmSize} onChange={(e) => setFirmSize(e.target.value)}>
+              <div className="mb-5">
+                <label className="block text-base font-medium mb-1">Firm size</label>
+                <select className="w-full px-[18px] py-3 bg-background border-2 border-border rounded-lg text-[19px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" value={firmSize} onChange={(e) => setFirmSize(e.target.value)}>
                   <option value="">Select firm size</option>
                   <option value="solo">Solo practitioner</option>
                   <option value="small">2-10 people</option>
@@ -150,19 +150,19 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                   <option value="enterprise">200+ people</option>
                 </select>
               </div>
-              {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
-              <button type="submit" disabled={submitting} className="w-full mt-4 px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
+              {error && <p className="text-[17px] text-red-500 mb-3">{error}</p>}
+              <button type="submit" disabled={submitting} className="w-full mt-5 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
                 {submitting ? "Booking..." : "Book Demo"}
               </button>
-              <p className="text-xs text-muted-foreground mt-2 text-center">We&apos;ll respond within 24 hours</p>
+              <p className="text-[15px] text-muted-foreground mt-2 text-center">We&apos;ll respond within 24 hours</p>
             </form>
           </>
         ) : (
-          <div className="text-center py-8">
-            <div className="w-12 h-12 rounded-full bg-primary inline-flex items-center justify-center text-2xl mb-4">&#10003;</div>
-            <h3 className="font-display text-2xl mb-2">You&apos;re booked, {name}!</h3>
-            <p className="text-sm text-muted-foreground mb-6">We&apos;ll send a calendar invite to your email within 24 hours with a time that works for your firm.</p>
-            <button onClick={handleClose} className="px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Close</button>
+          <div className="text-center py-10">
+            <div className="w-[60px] h-[60px] rounded-full bg-primary inline-flex items-center justify-center text-[30px] mb-5">&#10003;</div>
+            <h3 className="font-display text-[30px] mb-3">You&apos;re booked, {name}!</h3>
+            <p className="text-[17px] text-muted-foreground mb-8">We&apos;ll send a calendar invite to your email within 24 hours with a time that works for your firm.</p>
+            <button onClick={handleClose} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Close</button>
           </div>
         )}
       </div>
@@ -174,11 +174,11 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="border border-border rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-6 py-[18px] text-left text-[15px] font-semibold hover:bg-card transition-colors">
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-8 py-[22px] text-left text-[19px] font-semibold hover:bg-card transition-colors">
         {q}
-        <span className={`text-muted-foreground text-lg ml-4 transition-transform ${open ? "rotate-45" : ""}`}>+</span>
+        <span className={`text-muted-foreground text-[22px] ml-5 transition-transform ${open ? "rotate-45" : ""}`}>+</span>
       </button>
-      {open && <div className="px-6 pb-[18px] text-sm text-muted-foreground leading-relaxed">{a}</div>}
+      {open && <div className="px-8 pb-[22px] text-[17px] text-muted-foreground leading-relaxed">{a}</div>}
     </div>
   );
 }
@@ -191,39 +191,39 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
-        <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#" className="font-semibold text-xl tracking-tight">Fi371</a>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#how" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">How it works</a>
-            <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Features</a>
-            <button onClick={() => setDemoOpen(true)} className="px-4 py-2 bg-primary text-primary-foreground text-[13px] font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+        <div className="max-w-[1500px] mx-auto px-8 h-20 flex items-center justify-between">
+          <a href="#" className="font-semibold text-2xl tracking-tight">Fi371</a>
+          <nav className="hidden md:flex items-center gap-10">
+            <a href="#how" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">How it works</a>
+            <a href="#features" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Features</a>
+            <button onClick={() => setDemoOpen(true)} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
           </nav>
         </div>
       </header>
 
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-24">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <section className="pt-40 pb-[120px]">
+          <div className="max-w-[1500px] mx-auto px-8">
+            <div className="grid lg:grid-cols-2 gap-20 items-start">
               <div>
-                <div className="font-mono text-xs font-medium tracking-[0.08em] text-muted-foreground uppercase mb-4">AI-native audit automation</div>
-                <h1 className="font-display text-[56px] leading-[1.08] tracking-tight mb-6">Close audit engagements in days, not weeks.</h1>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-[480px]">Accelerate your audits with an end-to-end platform built on AI. From client onboarding to final opinion, faster.</p>
-                <div className="flex gap-4 mb-2">
-                  <button onClick={() => setDemoOpen(true)} className="px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
-                  <a href="https://app.fi371.com/wizard/index-v2.html" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 border-[1.5px] border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
+                <div className="font-mono text-[15px] font-medium tracking-[0.08em] text-muted-foreground uppercase mb-5">AI-native audit automation</div>
+                <h1 className="font-display text-[70px] leading-[1.08] tracking-tight mb-8">Close audit engagements in days, not weeks.</h1>
+                <p className="text-[22px] text-muted-foreground leading-relaxed mb-10 max-w-[600px]">Accelerate your audits with an end-to-end platform built on AI. From client onboarding to final opinion, faster.</p>
+                <div className="flex gap-5 mb-3">
+                  <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+                  <a href="https://app.fi371.com/wizard/index-v2.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
                 </div>
-                <p className="text-xs text-muted-foreground">30-minute demo &middot; See your firm&apos;s workflow &middot; No commitment</p>
+                <p className="text-[15px] text-muted-foreground">30-minute demo &middot; See your firm&apos;s workflow &middot; No commitment</p>
               </div>
 
-              <div className="flex flex-col gap-2 pt-8" role="list" aria-label="Audit workflow steps">
+              <div className="flex flex-col gap-3 pt-10" role="list" aria-label="Audit workflow steps">
                 {workflowSteps.map((step) => (
-                  <div key={step.num} className="flex items-center gap-3 px-5 py-4 border border-border rounded-lg hover:border-muted-foreground transition-colors" role="listitem">
-                    <span className="font-mono text-xs font-medium text-muted-foreground w-6 shrink-0">{step.num}</span>
-                    <span className="flex-1 text-[15px] font-medium">{step.name}</span>
-                    {step.badge === "ai" && <span className="font-mono text-[11px] font-medium tracking-wide px-2 py-0.5 rounded bg-primary text-primary-foreground">AI</span>}
-                    {step.badge === "human" && <span className="font-mono text-[11px] font-medium tracking-wide px-2 py-0.5 rounded bg-card text-muted-foreground border border-border">Human Eyes</span>}
+                  <div key={step.num} className="flex items-center gap-4 px-6 py-5 border border-border rounded-lg hover:border-muted-foreground transition-colors" role="listitem">
+                    <span className="font-mono text-[15px] font-medium text-muted-foreground w-8 shrink-0">{step.num}</span>
+                    <span className="flex-1 text-[19px] font-medium">{step.name}</span>
+                    {step.badge === "ai" && <span className="font-mono text-sm font-medium tracking-wide px-2.5 py-0.5 rounded bg-primary text-primary-foreground">AI</span>}
+                    {step.badge === "human" && <span className="font-mono text-sm font-medium tracking-wide px-2.5 py-0.5 rounded bg-card text-muted-foreground border border-border">Human Eyes</span>}
                   </div>
                 ))}
               </div>
@@ -231,54 +231,54 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-6"><hr className="border-border" /></div>
+        <div className="max-w-[1500px] mx-auto px-8"><hr className="border-border" /></div>
 
         {/* Stats */}
-        <section className="py-16">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="grid sm:grid-cols-3 gap-8">
+        <section className="py-20">
+          <div className="max-w-[1500px] mx-auto px-8">
+            <div className="grid sm:grid-cols-3 gap-10">
               {stats.map((s) => (
                 <div key={s.value}>
-                  <div className="font-display text-5xl mb-1">{s.value}</div>
-                  <div className="text-sm text-muted-foreground leading-relaxed">{s.label}</div>
+                  <div className="font-display text-[60px] mb-1">{s.value}</div>
+                  <div className="text-[17px] text-muted-foreground leading-relaxed">{s.label}</div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-6"><hr className="border-border" /></div>
+        <div className="max-w-[1500px] mx-auto px-8"><hr className="border-border" /></div>
 
         {/* Problem */}
-        <section className="py-16">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <h2 className="font-display text-[40px] leading-[1.15] tracking-tight mb-12 max-w-[640px]">Audit teams are still losing time to work that should already be automated.</h2>
-            <div className="grid sm:grid-cols-2 gap-4">
+        <section className="py-20">
+          <div className="max-w-[1500px] mx-auto px-8">
+            <h2 className="font-display text-[50px] leading-[1.15] tracking-tight mb-16 max-w-[800px]">Audit teams are still losing time to work that should already be automated.</h2>
+            <div className="grid sm:grid-cols-2 gap-5">
               {painPoints.map((p) => (
-                <div key={p.title} className="p-6 border border-border rounded-lg">
-                  <div className="text-[15px] font-semibold mb-1">{p.title}</div>
-                  <div className="text-sm text-muted-foreground leading-relaxed">{p.desc}</div>
+                <div key={p.title} className="p-8 border border-border rounded-lg">
+                  <div className="text-[19px] font-semibold mb-1">{p.title}</div>
+                  <div className="text-[17px] text-muted-foreground leading-relaxed">{p.desc}</div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-6"><hr className="border-border" /></div>
+        <div className="max-w-[1500px] mx-auto px-8"><hr className="border-border" /></div>
 
         {/* Features */}
-        <section className="py-16" id="features">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <h2 className="font-display text-[40px] leading-[1.15] tracking-tight mb-12 max-w-[640px]">Features that drive real outcomes.</h2>
-            <div className="max-w-[800px] border border-border rounded-xl overflow-hidden">
+        <section className="py-20" id="features">
+          <div className="max-w-[1500px] mx-auto px-8">
+            <h2 className="font-display text-[50px] leading-[1.15] tracking-tight mb-16 max-w-[800px]">Features that drive real outcomes.</h2>
+            <div className="max-w-[1000px] border border-border rounded-xl overflow-hidden">
               <div className="grid grid-cols-2 bg-card">
-                <span className="px-6 py-3.5 font-mono text-[11px] font-medium tracking-[0.06em] uppercase text-muted-foreground">Feature</span>
-                <span className="px-6 py-3.5 font-mono text-[11px] font-medium tracking-[0.06em] uppercase text-muted-foreground">Benefit</span>
+                <span className="px-8 py-[18px] font-mono text-sm font-medium tracking-[0.06em] uppercase text-muted-foreground">Feature</span>
+                <span className="px-8 py-[18px] font-mono text-sm font-medium tracking-[0.06em] uppercase text-muted-foreground">Benefit</span>
               </div>
               {features.map((f, i) => (
                 <div key={f.name} className={`grid grid-cols-2 border-t border-border ${i % 2 === 0 ? "bg-background" : ""}`}>
-                  <span className="px-6 py-3.5 text-sm font-medium">{f.name}</span>
-                  <span className="px-6 py-3.5 text-sm text-muted-foreground">
+                  <span className="px-8 py-[18px] text-[17px] font-medium">{f.name}</span>
+                  <span className="px-8 py-[18px] text-[17px] text-muted-foreground">
                     {f.highlight ? <span className="bg-primary text-primary-foreground px-1.5 py-0.5 rounded">{f.benefit}</span> : f.benefit}
                   </span>
                 </div>
@@ -286,26 +286,26 @@ export default function Home() {
             </div>
 
             {/* Compare expand */}
-            <div className="mt-8">
-              <button onClick={() => setCompareOpen(!compareOpen)} className={`text-[15px] font-semibold hover:text-muted-foreground transition-colors ${compareOpen ? "" : ""}`}>
-                Legacy audit tools vs our AI-native platform <span className={`inline-block text-xs transition-transform ${compareOpen ? "rotate-90" : ""}`}>&#9655;</span>
+            <div className="mt-10">
+              <button onClick={() => setCompareOpen(!compareOpen)} className={`text-[19px] font-semibold hover:text-muted-foreground transition-colors ${compareOpen ? "" : ""}`}>
+                Legacy audit tools vs our AI-native platform <span className={`inline-block text-[15px] transition-transform ${compareOpen ? "rotate-90" : ""}`}>&#9655;</span>
               </button>
             </div>
 
             {compareOpen && (
-              <div className="mt-8">
-                <p className="text-sm text-muted-foreground mb-6">A detailed comparison of how each approach handles key audit workflow areas.</p>
+              <div className="mt-10">
+                <p className="text-[17px] text-muted-foreground mb-8">A detailed comparison of how each approach handles key audit workflow areas.</p>
                 <div className="border border-border rounded-xl overflow-hidden">
                   <div className="grid grid-cols-[1fr_1.2fr_1.2fr] bg-card">
-                    <span className="px-5 py-3.5 font-mono text-[11px] font-medium tracking-[0.06em] uppercase text-muted-foreground">Capability</span>
-                    <span className="px-5 py-3.5 font-mono text-[11px] font-medium tracking-[0.06em] uppercase text-muted-foreground">Legacy platform</span>
-                    <span className="px-5 py-3.5 font-mono text-[11px] font-medium tracking-[0.06em] uppercase bg-primary text-primary-foreground">Fi371 AI-native</span>
+                    <span className="px-6 py-[18px] font-mono text-sm font-medium tracking-[0.06em] uppercase text-muted-foreground">Capability</span>
+                    <span className="px-6 py-[18px] font-mono text-sm font-medium tracking-[0.06em] uppercase text-muted-foreground">Legacy platform</span>
+                    <span className="px-6 py-[18px] font-mono text-sm font-medium tracking-[0.06em] uppercase bg-primary text-primary-foreground">Fi371 AI-native</span>
                   </div>
                   {compareRows.map((row, i) => (
                     <div key={row.cap} className={`grid grid-cols-[1fr_1.2fr_1.2fr] border-t border-border ${i % 2 === 0 ? "bg-background" : ""}`}>
-                      <span className="px-5 py-3.5 text-[13px] font-medium">{row.cap}</span>
-                      <span className="px-5 py-3.5 text-[13px] text-muted-foreground border-l border-border">{row.legacy}</span>
-                      <span className="px-5 py-3.5 text-[13px] border-l border-border">{row.modern}</span>
+                      <span className="px-6 py-[18px] text-base font-medium">{row.cap}</span>
+                      <span className="px-6 py-[18px] text-base text-muted-foreground border-l border-border">{row.legacy}</span>
+                      <span className="px-6 py-[18px] text-base border-l border-border">{row.modern}</span>
                     </div>
                   ))}
                 </div>
@@ -314,42 +314,42 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-6"><hr className="border-border" /></div>
+        <div className="max-w-[1500px] mx-auto px-8"><hr className="border-border" /></div>
 
         {/* How it works */}
-        <section className="py-16" id="how">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <h2 className="font-display text-[40px] leading-[1.15] tracking-tight mb-12 max-w-[640px]">From onboarding to opinion. One platform.</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="p-8 border border-border rounded-xl">
-                <div className="font-mono text-xs font-medium text-muted-foreground mb-4">01</div>
-                <h3 className="font-display text-2xl mb-2">Connect your client</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">Automated PBC list generation, client portal, and document intake. AI extracts and organizes everything.</p>
-                <span className="inline-block mt-4 font-mono text-[11px] font-medium px-2.5 py-1 rounded bg-primary text-primary-foreground">AI-powered</span>
+        <section className="py-20" id="how">
+          <div className="max-w-[1500px] mx-auto px-8">
+            <h2 className="font-display text-[50px] leading-[1.15] tracking-tight mb-16 max-w-[800px]">From onboarding to opinion. One platform.</h2>
+            <div className="grid md:grid-cols-3 gap-10">
+              <div className="p-10 border border-border rounded-xl">
+                <div className="font-mono text-[15px] font-medium text-muted-foreground mb-5">01</div>
+                <h3 className="font-display text-[30px] mb-3">Connect your client</h3>
+                <p className="text-[17px] text-muted-foreground leading-relaxed">Automated PBC list generation, client portal, and document intake. AI extracts and organizes everything.</p>
+                <span className="inline-block mt-5 font-mono text-sm font-medium px-3 py-1 rounded bg-primary text-primary-foreground">AI-powered</span>
               </div>
-              <div className="p-8 border border-border rounded-xl">
-                <div className="font-mono text-xs font-medium text-muted-foreground mb-4">02</div>
-                <h3 className="font-display text-2xl mb-2">Run your procedures</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">AI drafts risk assessments, generates audit procedures, and pre-populates workpapers from your firm&apos;s templates.</p>
-                <span className="inline-block mt-4 font-mono text-[11px] font-medium px-2.5 py-1 rounded bg-primary text-primary-foreground">AI-powered</span>
+              <div className="p-10 border border-border rounded-xl">
+                <div className="font-mono text-[15px] font-medium text-muted-foreground mb-5">02</div>
+                <h3 className="font-display text-[30px] mb-3">Run your procedures</h3>
+                <p className="text-[17px] text-muted-foreground leading-relaxed">AI drafts risk assessments, generates audit procedures, and pre-populates workpapers from your firm&apos;s templates.</p>
+                <span className="inline-block mt-5 font-mono text-sm font-medium px-3 py-1 rounded bg-primary text-primary-foreground">AI-powered</span>
               </div>
-              <div className="p-8 border border-border rounded-xl">
-                <div className="font-mono text-xs font-medium text-muted-foreground mb-4">03</div>
-                <h3 className="font-display text-2xl mb-2">Review and sign off</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">Clear review queues, traceable AI reasoning, and structured sign-off at every stage. You stay in control.</p>
-                <span className="inline-block mt-4 font-mono text-[11px] font-medium px-2.5 py-1 rounded bg-card text-muted-foreground border border-border">Human Eyes</span>
+              <div className="p-10 border border-border rounded-xl">
+                <div className="font-mono text-[15px] font-medium text-muted-foreground mb-5">03</div>
+                <h3 className="font-display text-[30px] mb-3">Review and sign off</h3>
+                <p className="text-[17px] text-muted-foreground leading-relaxed">Clear review queues, traceable AI reasoning, and structured sign-off at every stage. You stay in control.</p>
+                <span className="inline-block mt-5 font-mono text-sm font-medium px-3 py-1 rounded bg-card text-muted-foreground border border-border">Human Eyes</span>
               </div>
             </div>
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-6"><hr className="border-border" /></div>
+        <div className="max-w-[1500px] mx-auto px-8"><hr className="border-border" /></div>
 
         {/* FAQ */}
-        <section className="py-16" id="faq">
-          <div className="max-w-[720px] mx-auto px-6">
-            <h2 className="font-display text-[40px] leading-[1.15] tracking-tight mb-12 max-w-[640px]">Frequently asked questions</h2>
-            <div className="flex flex-col gap-2">
+        <section className="py-20" id="faq">
+          <div className="max-w-[900px] mx-auto px-8">
+            <h2 className="font-display text-[50px] leading-[1.15] tracking-tight mb-16 max-w-[800px]">Frequently asked questions</h2>
+            <div className="flex flex-col gap-3">
               {faqs.map((faq) => (
                 <FAQItem key={faq.q} q={faq.q} a={faq.a} />
               ))}
@@ -357,29 +357,29 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-6"><hr className="border-border" /></div>
+        <div className="max-w-[1500px] mx-auto px-8"><hr className="border-border" /></div>
 
         {/* CTA */}
-        <section className="py-24 text-center">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <h2 className="font-display text-5xl leading-[1.1] mb-4">Ready to leave 2005 behind?</h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-[520px] mx-auto">See how Fi371 works for your firm. 30-minute demo, tailored to your workflow.</p>
-            <div className="flex justify-center gap-4">
-              <button onClick={() => setDemoOpen(true)} className="px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
-              <a href="https://app.fi371.com/wizard/index-v2.html" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 border-[1.5px] border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
+        <section className="py-[120px] text-center">
+          <div className="max-w-[1500px] mx-auto px-8">
+            <h2 className="font-display text-[60px] leading-[1.1] mb-5">Ready to leave 2005 behind?</h2>
+            <p className="text-[22px] text-muted-foreground mb-10 max-w-[650px] mx-auto">See how Fi371 works for your firm. 30-minute demo, tailored to your workflow.</p>
+            <div className="flex justify-center gap-5">
+              <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+              <a href="https://app.fi371.com/wizard/index-v2.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
             </div>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border py-8">
-        <div className="max-w-[1200px] mx-auto px-6 flex justify-between items-center">
-          <span className="text-[13px] text-muted-foreground">&copy; 2026 Fi371. All rights reserved.</span>
-          <div className="flex gap-6">
-            <a href="#" className="text-[13px] text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
-            <a href="#" className="text-[13px] text-muted-foreground hover:text-foreground transition-colors">Terms</a>
-            <a href="#" className="text-[13px] text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+      <footer className="border-t border-border py-10">
+        <div className="max-w-[1500px] mx-auto px-8 flex justify-between items-center">
+          <span className="text-base text-muted-foreground">&copy; 2026 Fi371. All rights reserved.</span>
+          <div className="flex gap-8">
+            <a href="#" className="text-base text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
+            <a href="#" className="text-base text-muted-foreground hover:text-foreground transition-colors">Terms</a>
+            <a href="#" className="text-base text-muted-foreground hover:text-foreground transition-colors">Contact</a>
           </div>
         </div>
       </footer>

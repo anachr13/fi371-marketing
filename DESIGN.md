@@ -30,13 +30,13 @@
 - **Mono/AI States:** IBM Plex Mono (Google Fonts) -- used for AI status annotations, audit metadata, proof points, and kicker text. Makes the AI-native angle feel operational, not gimmicky.
 - **Loading:** All fonts via next/font/google for optimal performance
 - **Scale:**
-  - Hero: 60px / 3.75rem (font-black, tracking-tight)
-  - H1: 48px / 3rem
-  - H2: 36px / 2.25rem
-  - H3: 24px / 1.5rem
-  - Body: 16px / 1rem
-  - Small: 14px / 0.875rem
-  - Caption/Mono: 12px / 0.75rem
+  - Hero: 70px / 4.375rem (font-black, tracking-tight)
+  - H1: 60px / 3.75rem
+  - H2: 50px / 3.125rem
+  - H3: 30px / 1.875rem
+  - Body: 19px / 1.1875rem
+  - Small: 17px / 1.0625rem
+  - Caption/Mono: 15px / 0.9375rem
 
 ## Color
 - **Approach:** Restrained -- warm paper base + single bold accent. Color is used with surgical precision.
