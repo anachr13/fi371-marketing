@@ -1,10 +1,19 @@
-# Design System -- AuditAI
+# Design System -- Fi371
 
 ## Product Context
 - **What this is:** AI-native audit automation platform -- from client onboarding to final opinion
 - **Who it's for:** Solo, small, and mid-sized accounting/audit firms frustrated with legacy tools
 - **Space/industry:** Audit technology / accounting automation
 - **Project type:** Marketing landing page (Next.js + Tailwind + shadcn/ui)
+
+## Logo
+- **Type:** Text wordmark only, no icon or symbol
+- **Text:** "Fi371"
+- **Font:** DM Sans (body font), 20px, font-weight 700
+- **Color:** Uses --text (primary foreground) in both light and dark modes
+- **Tracking:** -0.02em (slightly tightened)
+- **Usage:** Top-left of header, footer copyright. Always rendered as plain text, never as an image.
+- **Do not:** Add icons, symbols, gradients, or decorative elements to the logo. Keep it typographic.
 
 ## Aesthetic Direction
 - **Direction:** Warm Editorial -- paper-textured warmth meets precise, document-driven design
