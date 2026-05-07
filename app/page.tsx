@@ -129,19 +129,19 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-[13px] font-medium mb-1">Full name</label>
-                <input className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" placeholder="Jane Smith" required value={name} onChange={(e) => setName(e.target.value)} />
+                <input className="w-full px-3.5 py-2.5 bg-background border-2 border-border rounded-lg text-[15px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" placeholder="Jane Smith" required value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div className="mb-4">
                 <label className="block text-[13px] font-medium mb-1">Work email</label>
-                <input className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" type="email" placeholder="jane@yourfirm.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input className="w-full px-3.5 py-2.5 bg-background border-2 border-border rounded-lg text-[15px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" type="email" placeholder="jane@yourfirm.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="mb-4">
                 <label className="block text-[13px] font-medium mb-1">Firm name</label>
-                <input className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" placeholder="Smith & Associates" value={company} onChange={(e) => setCompany(e.target.value)} />
+                <input className="w-full px-3.5 py-2.5 bg-background border-2 border-border rounded-lg text-[15px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" placeholder="Smith & Associates" value={company} onChange={(e) => setCompany(e.target.value)} />
               </div>
               <div className="mb-4">
                 <label className="block text-[13px] font-medium mb-1">Firm size</label>
-                <select className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" value={firmSize} onChange={(e) => setFirmSize(e.target.value)}>
+                <select className="w-full px-3.5 py-2.5 bg-background border-2 border-border rounded-lg text-[15px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors" value={firmSize} onChange={(e) => setFirmSize(e.target.value)}>
                   <option value="">Select firm size</option>
                   <option value="solo">Solo practitioner</option>
                   <option value="small">2-10 people</option>
