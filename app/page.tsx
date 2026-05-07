@@ -57,18 +57,66 @@ const faqs = [
 
 function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [firmSize, setFirmSize] = useState("");
+  const [error, setError] = useState("");
 
   if (!open) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSubmitting(true);
+
+    try {
+      const res = await fetch("/api/demo-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: name,
+          workEmail: email,
+          company,
+          firmSize,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Something went wrong. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+
+      setSubmitting(false);
+      setSubmitted(true);
+    } catch {
+      setError("Network error. Please try again.");
+      setSubmitting(false);
+    }
+  };
+
+  const handleClose = () => {
+    onClose();
+    setSubmitted(false);
+    setSubmitting(false);
+    setError("");
+    setName("");
+    setEmail("");
+    setCompany("");
+    setFirmSize("");
+  };
 
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center bg-foreground/60 backdrop-blur-sm"
-      onClick={(e) => { if (e.target === e.currentTarget) { onClose(); setSubmitted(false); } }}
+      onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
       <div className="bg-background border border-border rounded-xl p-10 w-full max-w-[480px] mx-6 relative">
         <button
-          onClick={() => { onClose(); setSubmitted(false); }}
+          onClick={handleClose}
           className="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-xl px-2"
         >
           &times;
@@ -78,30 +126,34 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
           <>
             <h3 className="font-display text-[28px] mb-1">Book a demo</h3>
             <p className="text-sm text-muted-foreground mb-8">30-minute walkthrough tailored to your firm&apos;s workflow. No commitment.</p>
-            <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+            <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-[13px] font-medium mb-1">Full name</label>
                 <input className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" placeholder="Jane Smith" required value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div className="mb-4">
                 <label className="block text-[13px] font-medium mb-1">Work email</label>
-                <input className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" type="email" placeholder="jane@yourfirm.com" required />
+                <input className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" type="email" placeholder="jane@yourfirm.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="mb-4">
                 <label className="block text-[13px] font-medium mb-1">Firm name</label>
-                <input className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" placeholder="Smith & Associates" />
+                <input className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" placeholder="Smith & Associates" value={company} onChange={(e) => setCompany(e.target.value)} />
               </div>
               <div className="mb-4">
                 <label className="block text-[13px] font-medium mb-1">Firm size</label>
-                <select className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none">
+                <select className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-[15px] focus:border-primary outline-none" value={firmSize} onChange={(e) => setFirmSize(e.target.value)}>
                   <option value="">Select firm size</option>
                   <option value="solo">Solo practitioner</option>
-                  <option value="2-10">2-10 people</option>
-                  <option value="11-50">11-50 people</option>
-                  <option value="50+">50+ people</option>
+                  <option value="small">2-10 people</option>
+                  <option value="mid">11-50 people</option>
+                  <option value="large">51-200 people</option>
+                  <option value="enterprise">200+ people</option>
                 </select>
               </div>
-              <button type="submit" className="w-full mt-4 px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+              {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
+              <button type="submit" disabled={submitting} className="w-full mt-4 px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
+                {submitting ? "Booking..." : "Book Demo"}
+              </button>
               <p className="text-xs text-muted-foreground mt-2 text-center">We&apos;ll respond within 24 hours</p>
             </form>
           </>
@@ -110,7 +162,7 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
             <div className="w-12 h-12 rounded-full bg-primary inline-flex items-center justify-center text-2xl mb-4">&#10003;</div>
             <h3 className="font-display text-2xl mb-2">You&apos;re booked, {name}!</h3>
             <p className="text-sm text-muted-foreground mb-6">We&apos;ll send a calendar invite to your email within 24 hours with a time that works for your firm.</p>
-            <button onClick={() => { onClose(); setSubmitted(false); }} className="px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Close</button>
+            <button onClick={handleClose} className="px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Close</button>
           </div>
         )}
       </div>
