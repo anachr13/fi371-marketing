@@ -1,35 +1,43 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { DM_Sans, Instrument_Serif, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-body",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
   subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-display",
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "AuditAI — AI-Native Audit Automation Platform",
+  title: "Fi371 — AI-Native Audit Automation Platform",
   description:
-    "Close audit engagements at the speed of light. AI-native audit automation to reduce audit time and support crypto audits.",
+    "Close audit engagements in days, not weeks. AI-native audit automation for solo, small and mid-sized firms.",
   openGraph: {
     type: "website",
-    title: "AuditAI — AI-Native Audit Automation Platform",
+    title: "Fi371 — AI-Native Audit Automation Platform",
     description:
-      "Close audit engagements at the speed of light. AI-native audit automation to reduce audit time and support crypto audits.",
+      "Close audit engagements in days, not weeks. AI-native audit automation for solo, small and mid-sized firms.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AuditAI — AI-Native Audit Automation Platform",
+    title: "Fi371 — AI-Native Audit Automation Platform",
     description:
-      "Close audit engagements at the speed of light. AI-native audit automation to reduce audit time and support crypto audits.",
+      "Close audit engagements in days, not weeks. AI-native audit automation for solo, small and mid-sized firms.",
   },
 };
 
@@ -39,9 +47,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${dmSans.variable} ${instrumentSerif.variable} ${ibmPlexMono.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
       </body>
