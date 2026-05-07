@@ -114,7 +114,7 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
       className="fixed inset-0 z-[200] flex items-center justify-center bg-foreground/60 backdrop-blur-sm"
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
-      <div className="bg-background border border-border rounded-xl p-[50px] w-full max-w-[600px] mx-8 relative">
+      <div className="bg-background border border-border rounded-xl p-[50px] w-full max-w-[600px] mx-8 max-h-[90vh] overflow-y-auto relative">
         <button
           onClick={handleClose}
           className="absolute top-5 right-5 text-muted-foreground hover:text-foreground text-2xl px-2.5"
