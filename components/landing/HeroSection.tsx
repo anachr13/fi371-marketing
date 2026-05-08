@@ -60,7 +60,7 @@ const HeroSection = ({ onOpenDemo }: HeroProps) => (
                 asChild
               >
                 <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer">
-                  See how it works
+                  Preview a Scenario
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>

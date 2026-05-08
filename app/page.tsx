@@ -81,7 +81,7 @@ export default function Home() {
         <div className="max-w-[1500px] mx-auto px-8 h-20 flex items-center justify-between">
           <a href="#" className="font-semibold text-2xl tracking-tight">Fi371</a>
           <nav className="hidden md:flex items-center gap-10">
-            <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">How it works</a>
+            <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Try It Yourself</a>
             <a href="#features" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Features</a>
             <button onClick={() => setDemoOpen(true)} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
           </nav>
@@ -99,7 +99,7 @@ export default function Home() {
                 <p className="text-[22px] text-muted-foreground leading-relaxed mb-10 max-w-[600px]">Accelerate your audits with an end-to-end platform built on AI. From client onboarding to final opinion, faster.</p>
                 <div className="flex gap-5 mb-3">
                   <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
-                  <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
+                  <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; Preview a Scenario</a>
                 </div>
                 <p className="text-[15px] text-muted-foreground">30-minute demo &middot; See your firm&apos;s workflow &middot; No commitment</p>
               </div>
@@ -253,7 +253,7 @@ export default function Home() {
             <p className="text-[22px] text-muted-foreground mb-10 max-w-[650px] mx-auto">See how Fi371 works for your firm. 30-minute demo, tailored to your workflow.</p>
             <div className="flex justify-center gap-5">
               <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
-              <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
+              <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; Evaluate the AI</a>
             </div>
           </div>
         </section>
