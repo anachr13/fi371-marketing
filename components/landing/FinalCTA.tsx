@@ -35,7 +35,7 @@ const FinalCTA = ({ onOpenDemo }: FinalCTAProps) => (
               className="text-foreground/75 hover:text-foreground hover:bg-transparent font-medium text-sm px-3"
               asChild
             >
-              <a href="https://fi371.vercel.app/index-v2.html" target="_blank" rel="noopener noreferrer">
+              <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer">
                 <Play className="mr-2 h-4 w-4" />
                 See How It Works
               </a>

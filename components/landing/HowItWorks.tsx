@@ -54,7 +54,7 @@ const HowItWorks = () => (
             size="lg"
             className="gradient-cta text-primary-foreground font-semibold border-0 hover:opacity-95 hover:shadow-glow text-base px-8"
           >
-            <a href="https://fi371.vercel.app/index-v2.html" target="_blank" rel="noopener noreferrer">
+            <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer">
               See it in action
               <ArrowRight className="ml-1 h-4 w-4" />
             </a>
