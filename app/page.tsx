@@ -99,7 +99,7 @@ export default function Home() {
                 <p className="text-[22px] text-muted-foreground leading-relaxed mb-10 max-w-[600px]">Accelerate your audits with an end-to-end platform built on AI. From client onboarding to final opinion, faster.</p>
                 <div className="flex gap-5 mb-3">
                   <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
-                  <a href="https://app.fi371.com/wizard/index-v2.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
+                  <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
                 </div>
                 <p className="text-[15px] text-muted-foreground">30-minute demo &middot; See your firm&apos;s workflow &middot; No commitment</p>
               </div>
@@ -253,7 +253,7 @@ export default function Home() {
             <p className="text-[22px] text-muted-foreground mb-10 max-w-[650px] mx-auto">See how Fi371 works for your firm. 30-minute demo, tailored to your workflow.</p>
             <div className="flex justify-center gap-5">
               <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
-              <a href="https://app.fi371.com/wizard/index-v2.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
+              <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; See how it works</a>
             </div>
           </div>
         </section>

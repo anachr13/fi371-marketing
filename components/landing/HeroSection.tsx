@@ -59,7 +59,7 @@ const HeroSection = ({ onOpenDemo }: HeroProps) => (
                 className="text-foreground hover:bg-transparent hover:text-primary font-semibold text-base px-4 group"
                 asChild
               >
-                <a href="https://fi371.vercel.app/index-v2.html" target="_blank" rel="noopener noreferrer">
+                <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer">
                   See how it works
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
