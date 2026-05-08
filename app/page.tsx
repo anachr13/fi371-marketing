@@ -264,6 +264,7 @@ export default function Home() {
         <div className="max-w-[1500px] mx-auto px-8 flex justify-between items-center">
           <span className="text-base text-muted-foreground">&copy; 2026 Fi371. All rights reserved.</span>
           <div className="flex gap-8">
+            <Link href="/about" className="text-base text-muted-foreground hover:text-foreground transition-colors">About</Link>
             <Link href="/privacy" className="text-base text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
             <Link href="/terms" className="text-base text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
             <button onClick={() => setDemoOpen(true)} className="text-base text-muted-foreground hover:text-foreground transition-colors cursor-pointer">Contact</button>
