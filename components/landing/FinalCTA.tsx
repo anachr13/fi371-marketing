@@ -37,7 +37,7 @@ const FinalCTA = ({ onOpenDemo }: FinalCTAProps) => (
             >
               <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer">
                 <Play className="mr-2 h-4 w-4" />
-                See How It Works
+                Evaluate the AI
               </a>
             </Button>
           </div>
