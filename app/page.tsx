@@ -81,7 +81,7 @@ export default function Home() {
         <div className="max-w-[1500px] mx-auto px-8 h-20 flex items-center justify-between">
           <a href="#" className="font-semibold text-2xl tracking-tight">Fi371</a>
           <nav className="hidden md:flex items-center gap-10">
-            <a href="#how" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">How it works</a>
+            <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">How it works</a>
             <a href="#features" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Features</a>
             <button onClick={() => setDemoOpen(true)} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
           </nav>
@@ -110,7 +110,7 @@ export default function Home() {
                     <span className="font-mono text-[15px] font-medium text-muted-foreground w-8 shrink-0">{step.num}</span>
                     <span className="flex-1 text-[19px] font-medium">{step.name}</span>
                     {step.badge === "ai" && <span className="font-mono text-sm font-medium tracking-wide px-2.5 py-0.5 rounded bg-primary text-primary-foreground">AI</span>}
-                    {step.badge === "human" && <span className="font-mono text-sm font-medium tracking-wide px-2.5 py-0.5 rounded bg-card text-muted-foreground border border-border">Human Eyes</span>}
+                    {step.badge === "human" && <span className="font-mono text-sm font-medium tracking-wide px-2.5 py-0.5 rounded bg-card text-muted-foreground border border-border">Human Action</span>}
                   </div>
                 ))}
               </div>
@@ -224,7 +224,7 @@ export default function Home() {
                 <div className="font-mono text-[15px] font-medium text-muted-foreground mb-5">03</div>
                 <h3 className="font-display text-[30px] mb-3">Review and sign off</h3>
                 <p className="text-[17px] text-muted-foreground leading-relaxed">Clear review queues, traceable AI reasoning, and structured sign-off at every stage. You stay in control.</p>
-                <span className="inline-block mt-5 font-mono text-sm font-medium px-3 py-1 rounded bg-card text-muted-foreground border border-border">Human Eyes</span>
+                <span className="inline-block mt-5 font-mono text-sm font-medium px-3 py-1 rounded bg-card text-muted-foreground border border-border">Human Action</span>
               </div>
             </div>
           </div>
