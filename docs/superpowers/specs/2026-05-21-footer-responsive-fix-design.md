@@ -15,7 +15,7 @@ Stack the footer content vertically on mobile (< 768px), switching to the curren
 ## Mobile Layout (< 768px)
 - Copyright on its own line, left-aligned
 - Nav links on a second line below, left-aligned
-- 20px horizontal padding (reduced from 32px)
+- 32px horizontal padding (consistent with rest of page)
 - 16px gap between links (reduced from 32px)
 - 14px font size for all text
 - `flex-wrap` on links as overflow safety net
@@ -28,7 +28,7 @@ Unchanged — side-by-side, 32px padding, 32px link gap, 16px font.
 | Element | Current | New |
 |---------|---------|-----|
 | `<footer>` | `py-10` | `py-8 md:py-10` |
-| Container div | `px-8 flex justify-between items-center` | `px-5 md:px-8 flex flex-col md:flex-row md:justify-between md:items-center gap-6 md:gap-0` |
+| Container div | `px-8 flex justify-between items-center` | `px-8 flex flex-col md:flex-row md:justify-between md:items-center gap-6 md:gap-0` |
 | Copyright span | `text-base` | `text-sm md:text-base` |
 | Nav links div | `flex gap-8` | `flex flex-wrap gap-4 md:gap-8` |
 | Each link/button (x4) | `text-base` | `text-sm md:text-base` |
