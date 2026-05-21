@@ -182,7 +182,7 @@ export default function Home() {
             {compareOpen && (
               <div className="mt-10">
                 <p className="text-[17px] text-muted-foreground mb-8">A detailed comparison of how each approach handles key audit workflow areas.</p>
-                <div className="border border-border rounded-xl overflow-hidden">
+                <div className="hidden lg:block border border-border rounded-xl overflow-hidden">
                   <div className="grid grid-cols-[1fr_1.2fr_1.2fr] bg-card">
                     <span className="px-6 py-[18px] font-mono text-sm font-medium tracking-[0.06em] uppercase text-muted-foreground">Capability</span>
                     <span className="px-6 py-[18px] font-mono text-sm font-medium tracking-[0.06em] uppercase text-muted-foreground">Legacy platform</span>
@@ -193,6 +193,25 @@ export default function Home() {
                       <span className="px-6 py-[18px] text-base font-medium">{row.cap}</span>
                       <span className="px-6 py-[18px] text-base text-muted-foreground border-l border-border">{row.legacy}</span>
                       <span className="px-6 py-[18px] text-base border-l border-border">{row.modern}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Mobile cards */}
+                <div className="lg:hidden space-y-4">
+                  {compareRows.map((row, i) => (
+                    <div key={row.cap} className="rounded-xl border border-border bg-card p-5">
+                      <h3 className="font-sans text-base font-semibold mb-3">{row.cap}</h3>
+                      <div className="space-y-3">
+                        <div>
+                          <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Legacy approach</span>
+                          <p className="text-sm text-muted-foreground mt-1">{row.legacy}</p>
+                        </div>
+                        <div className="pt-3 border-t border-border">
+                          <span className="font-mono text-[10px] uppercase tracking-wider font-semibold bg-primary text-primary-foreground px-1.5 py-0.5 rounded">AI-native platform</span>
+                          <p className="text-sm text-foreground mt-1">{row.modern}</p>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
