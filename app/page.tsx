@@ -208,7 +208,7 @@ export default function Home() {
                           <p className="text-sm text-muted-foreground mt-1">{row.legacy}</p>
                         </div>
                         <div className="pt-3 border-t border-border">
-                          <span className="font-mono text-[10px] uppercase tracking-wider text-[#407000] font-semibold">AI-native platform</span>
+                          <span className="font-mono text-[10px] uppercase tracking-wider font-semibold bg-primary text-primary-foreground px-1.5 py-0.5 rounded">AI-native platform</span>
                           <p className="text-sm text-foreground mt-1">{row.modern}</p>
                         </div>
                       </div>
