@@ -78,7 +78,7 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
 
         {!submitted ? (
           <>
-            <h3 className="font-display text-[35px] mb-1">Book a demo</h3>
+            <h3 className="font-display text-[35px] mb-1">Request a demo</h3>
             <p className="text-[17px] text-muted-foreground mb-10">30-minute walkthrough tailored to your firm&apos;s workflow. No commitment.</p>
             <form onSubmit={handleSubmit}>
               <div className="mb-5">
@@ -106,7 +106,7 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
               </div>
               {error && <p className="text-[17px] text-red-500 mb-3">{error}</p>}
               <button type="submit" disabled={submitting} className="w-full mt-5 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
-                {submitting ? "Booking..." : "Book Demo"}
+                {submitting ? "Requesting..." : "Request a Demo"}
               </button>
               <p className="text-[15px] text-muted-foreground mt-2 text-center">We&apos;ll respond within 24 hours</p>
             </form>
@@ -114,9 +114,9 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
         ) : (
           <div className="text-center py-10">
             <div className="w-[60px] h-[60px] rounded-full bg-primary inline-flex items-center justify-center text-[30px] mb-5">&#10003;</div>
-            <h3 className="font-display text-[30px] mb-3">You&apos;re booked, {name}!</h3>
-            <p className="text-[17px] text-muted-foreground mb-8">We&apos;ll send a calendar invite to your email within 24 hours with a time that works for your firm.</p>
-            <button onClick={handleClose} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Close</button>
+            <h3 className="font-display text-[30px] mb-3">You&apos;re registered, {name}!</h3>
+            <p className="text-[17px] text-muted-foreground mb-8">We&apos;ll send a confirmation to your email within 24 hours. You can also pick a time that works best for your firm now.</p>
+            <a href="https://calendar.app.google/jSkPQpWzB4VUqvK48" target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Pick a Time</a>
           </div>
         )}
       </div>
