@@ -279,14 +279,14 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border py-10">
-        <div className="max-w-[1500px] mx-auto px-8 flex justify-between items-center">
-          <span className="text-base text-muted-foreground">&copy; 2026 Fi371. All rights reserved.</span>
-          <div className="flex gap-8">
-            <Link href="/about" className="text-base text-muted-foreground hover:text-foreground transition-colors">About</Link>
-            <Link href="/privacy" className="text-base text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="/terms" className="text-base text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
-            <button onClick={() => setDemoOpen(true)} className="text-base text-muted-foreground hover:text-foreground transition-colors cursor-pointer">Contact</button>
+      <footer className="border-t border-border py-8 md:py-10">
+        <div className="max-w-[1500px] mx-auto px-8 flex flex-col md:flex-row md:justify-between md:items-center gap-6 md:gap-0">
+          <span className="text-sm md:text-base text-muted-foreground">&copy; 2026 Fi371. All rights reserved.</span>
+          <div className="flex flex-wrap gap-4 md:gap-8">
+            <Link href="/about" className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors">About</Link>
+            <Link href="/privacy" className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
+            <Link href="/terms" className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
+            <button onClick={() => setDemoOpen(true)} className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors cursor-pointer">Contact</button>
           </div>
         </div>
       </footer>
