@@ -201,14 +201,14 @@ export default function Home() {
                 <div className="lg:hidden space-y-4">
                   {compareRows.map((row, i) => (
                     <div key={row.cap} className="rounded-xl border border-border bg-card p-5">
-                      <h3 className="text-base font-semibold mb-3">{row.cap}</h3>
+                      <h3 className="font-sans text-base font-semibold mb-3">{row.cap}</h3>
                       <div className="space-y-3">
                         <div>
                           <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Legacy approach</span>
                           <p className="text-sm text-muted-foreground mt-1">{row.legacy}</p>
                         </div>
                         <div className="pt-3 border-t border-border">
-                          <span className="font-mono text-[10px] uppercase tracking-wider text-primary font-semibold">AI-native platform</span>
+                          <span className="font-mono text-[10px] uppercase tracking-wider text-[#407000] font-semibold">AI-native platform</span>
                           <p className="text-sm text-foreground mt-1">{row.modern}</p>
                         </div>
                       </div>
