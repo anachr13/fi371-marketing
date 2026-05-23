@@ -4,6 +4,7 @@
 
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
+import { blogPosts } from "@/lib/blog";
 
 /**
  * Builds the site's URL list for /sitemap.xml.
@@ -16,6 +17,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: `${SITE_URL}/`, lastModified, changeFrequency: "monthly", priority: 1 },
+    { url: `${SITE_URL}/blog`, lastModified, changeFrequency: "weekly", priority: 0.7 },
+    ...blogPosts.map((post) => ({
+      url: `${SITE_URL}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     { url: `${SITE_URL}/about`, lastModified, changeFrequency: "yearly", priority: 0.6 },
     { url: `${SITE_URL}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },
