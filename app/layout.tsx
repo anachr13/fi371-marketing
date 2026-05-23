@@ -37,18 +37,18 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: `${SITE_NAME} — ${SITE_TAGLINE}`,
   description: SITE_DESCRIPTION,
+  // Only truly site-wide OG/Twitter fields belong at the root. url/title/
+  // description are intentionally omitted: nested metadata is inherited by
+  // child routes, so setting them here would make /about, /privacy, /terms emit
+  // the homepage's og:url and title. Each page now derives og:title/description
+  // from its own title/description instead.
   openGraph: {
     type: "website",
-    url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
-    description: SITE_DESCRIPTION,
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
-    description: SITE_DESCRIPTION,
   },
 };
 
