@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy — Fi371",
   description:
     "How Fi371 collects, uses, stores, and protects your personal information. Your rights under GDPR and CCPA.",
+  alternates: { canonical: "/privacy" },
 };
 
 const sectionH = "font-display text-[30px] leading-tight tracking-tight mb-4";

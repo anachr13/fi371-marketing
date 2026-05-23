@@ -1,43 +1,16 @@
-"use client";
+// Server entry for /legacy — the previous ("legacy") landing-page design, kept
+// for reference but orphaned (nothing links to it). Marked noindex so it can't
+// compete with or duplicate the current homepage in search. Created 2026-05-23.
 
-import { useState } from "react";
-import Header from "@/components/landing/Header";
-import HeroSection from "@/components/landing/HeroSection";
-import TrustBar from "@/components/landing/TrustBar";
-import ProblemSection from "@/components/landing/ProblemSection";
-import SolutionSection from "@/components/landing/SolutionSection";
-import HowItWorks from "@/components/landing/HowItWorks";
-import FeatureGrid from "@/components/landing/FeatureGrid";
-import MidPageCTA from "@/components/landing/MidPageCTA";
-import CryptoSection from "@/components/landing/CryptoSection";
-import OutcomesSection from "@/components/landing/OutcomesSection";
-import FAQSection from "@/components/landing/FAQSection";
-import FinalCTA from "@/components/landing/FinalCTA";
-import DemoModal from "@/components/landing/DemoModal";
-import Footer from "@/components/landing/Footer";
-import StickyMobileCTA from "@/components/landing/StickyMobileCTA";
+import type { Metadata } from "next";
+import LegacyContent from "./LegacyContent";
 
-export default function Home() {
-  const [demoOpen, setDemoOpen] = useState(false);
-  const openDemo = () => setDemoOpen(true);
+export const metadata: Metadata = {
+  title: "Fi371 — Audit Automation (legacy layout)",
+  // Excluded from search: this is a retired design, not a distinct destination.
+  robots: { index: false, follow: true },
+};
 
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header onOpenDemo={openDemo} />
-      <HeroSection onOpenDemo={openDemo} />
-      <TrustBar />
-      <ProblemSection />
-      <SolutionSection />
-      <HowItWorks />
-      <FeatureGrid />
-      <MidPageCTA onOpenDemo={openDemo} />
-      <CryptoSection onOpenDemo={openDemo} />
-      <OutcomesSection />
-      <FAQSection onOpenDemo={openDemo} />
-      <FinalCTA onOpenDemo={openDemo} />
-      <Footer />
-      <StickyMobileCTA onOpenDemo={openDemo} />
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
-    </div>
-  );
+export default function LegacyPage() {
+  return <LegacyContent />;
 }
