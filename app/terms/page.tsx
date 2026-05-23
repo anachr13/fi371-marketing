@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Terms of Service — Fi371",
   description:
     "The terms governing your use of the Fi371 website. Acceptable use, intellectual property, disclaimers, and governing law.",
+  alternates: { canonical: "/terms" },
 };
 
 const sectionH = "font-display text-[30px] leading-tight tracking-tight mb-4";
