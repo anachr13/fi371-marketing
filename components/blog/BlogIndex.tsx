@@ -55,7 +55,7 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
                     <span aria-hidden>&middot;</span>
                     <span>{post.readingMinutes} min read</span>
                   </div>
-                  <h2 className="font-display text-[32px] leading-tight tracking-tight mb-3 group-hover:text-primary transition-colors">
+                  <h2 className="font-display text-[32px] leading-tight tracking-tight mb-3 text-foreground group-hover:underline underline-offset-[6px] decoration-2 transition-colors">
                     {post.title}
                   </h2>
                   <p className="text-[18px] text-muted-foreground leading-relaxed max-w-[680px]">
