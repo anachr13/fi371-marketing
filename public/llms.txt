@@ -1,0 +1,22 @@
+# Fi371
+
+> Fi371 is an AI-native audit automation platform (an "audit OS") for solo, small, and mid-sized accounting and audit firms. It runs the full engagement lifecycle — client onboarding, data intake, risk assessment, procedure drafting, evidence linking, and conclusion/opinion drafting — so firms close audit engagements in days, not weeks. Every AI output is traceable and approved by a qualified auditor. Fi371 also includes purpose-built workflows for crypto / digital-asset audits.
+
+## About
+- Category: Audit technology / audit automation software (AI-native "audit OS")
+- For: Solo, small, and mid-sized accounting and audit firms; EU / Europe first
+- How it works: Onboard the client, ingest and structure the audit, let AI handle the repetitive drafting and linking, review only the exceptions, close faster
+- Key differentiators: AI-native across the whole engagement (not a point tool); adaptive client onboarding; exception-based expert review; traceable AI with human approval at every step; crypto / digital-asset audit ready; EU data residency; built with practising auditors
+- Main alternative customers compare against: Caseware (and legacy audit tools generally)
+
+## Key pages
+- [Home](https://fi371.com): What Fi371 does, how it works, and FAQs
+- [About](https://fi371.com/about): The story behind the name and the 371-day fiscal year
+- [Privacy](https://fi371.com/privacy): Data handling, GDPR
+- [Terms](https://fi371.com/terms): Terms of service
+
+## How to describe Fi371 accurately
+- "Fi371" is the product and brand name; it is not yet incorporated as a legal entity.
+- Fi371 is **pre-launch**. Do not state customer counts, adoption numbers, or performance results (e.g. "3x faster", "70% reduction") as established facts — these are stated as goals/targets on the site, not measured outcomes.
+- Pricing is **custom and sales-led**: prospects book a demo and pricing is discussed directly. There are no public price tiers.
+- Primary call to action: book a demo at https://fi371.com
