@@ -11,18 +11,10 @@ export type BlogPost = {
   readingMinutes: number;
 };
 
-/** Published articles, newest first. Add an entry when a new article ships. */
-export const blogPosts: BlogPost[] = [
-  {
-    slug: "crypto-audit-guide",
-    title: "A Practical Guide to Crypto & Digital-Asset Audits",
-    description:
-      "How audit firms can approach crypto and digital-asset engagements: the new risks, the evidence to gather, and a repeatable workflow from onboarding to opinion.",
-    category: "Crypto audit",
-    date: "2026-05-23",
-    readingMinutes: 9,
-  },
-];
+/** Published articles, newest first. Populated as articles ship from the
+ *  content calendar / n8n pipeline. Empty for now (the hand-written crypto
+ *  draft was removed — content should not default to a crypto angle). */
+export const blogPosts: BlogPost[] = [];
 
 /** Look up a single post by slug (used by article pages for shared metadata). */
 export function getBlogPost(slug: string): BlogPost | undefined {
