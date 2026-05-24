@@ -18,10 +18,13 @@ type Props = {
 };
 
 function formatDate(iso: string) {
+  // Format in UTC so date-only ISO strings (parsed as UTC midnight) render the
+  // same day for every viewer and don't cause server/client hydration drift.
   return new Date(iso).toLocaleDateString("en-GB", {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "UTC",
   });
 }
 
