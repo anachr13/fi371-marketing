@@ -16,7 +16,7 @@ import {
 import { EU_COUNTRIES, OTHER_COUNTRIES } from "@/lib/countries";
 
 const inputClass =
-  "w-full px-[18px] py-3 bg-background border-2 border-border rounded-lg text-[19px] focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors";
+  "w-full px-[18px] py-3 bg-background border-2 border-border rounded-lg text-[19px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors";
 const labelClass = "block text-[19px] font-medium mb-2";
 const helperClass = "text-[15px] text-muted-foreground mb-3";
 // Neutral selection styling (DESIGN.md reserves chartreuse for AI/CTA only).
