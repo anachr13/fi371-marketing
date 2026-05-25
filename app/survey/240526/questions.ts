@@ -36,22 +36,8 @@ export const CLIENT_TYPE_OPTIONS = [
   "Other",
 ] as const;
 
-export const REPETITIVE_PART_OPTIONS = [
-  "Client onboarding",
-  "PBC / document collection",
-  "TB/GL review",
-  "Business understanding",
-  "Risk assessment",
-  "Audit planning",
-  "Documentation drafting",
-  "Evidence organisation",
-  "Review notes",
-  "Client follow-ups",
-  "Other",
-] as const;
-
 export const STEPS = [
-  { kicker: "Step 1 of 3", title: "The big questions" },
-  { kicker: "Step 2 of 3", title: "About your firm" },
-  { kicker: "Step 3 of 3", title: "Your audit work" },
+  { kicker: "Step 1 of 3", title: "About you" },
+  { kicker: "Step 2 of 3", title: "The big questions" },
+  { kicker: "Step 3 of 3", title: "About your firm" },
 ] as const;
