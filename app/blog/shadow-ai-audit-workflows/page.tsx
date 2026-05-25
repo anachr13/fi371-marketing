@@ -147,6 +147,24 @@ export default function ShadowAiArticlePage() {
           and compliance.
         </p>
 
+        {/* Survey CTA — AI-in-Audit research survey on-site at /survey/240526. */}
+        <div className="my-12 rounded-2xl border border-primary/20 bg-card p-8">
+          <h2 className="font-display text-[28px] leading-tight mb-3">
+            Take the survey and join the AI auditors community
+          </h2>
+          <p className="text-[17px] text-muted-foreground mb-6">
+            Auditors are already experimenting with AI. Add your perspective to
+            our AI-in-Audit research &mdash; it takes just a few minutes, and
+            we&rsquo;ll send you the results when the study closes.
+          </p>
+          <Link
+            href="/survey/240526"
+            className="inline-block px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Take the survey
+          </Link>
+        </div>
+
         <h2 className={prose.h2}>How are auditors using AI unofficially?</h2>
         <p className={prose.p}>
           Many auditors are using AI to help with the kind of work that takes time
@@ -267,23 +285,6 @@ export default function ShadowAiArticlePage() {
           how it can be used safely, responsibly, and in a way that genuinely
           improves audit work.
         </p>
-
-        {/* Survey CTA — the AI-in-Audit research survey lives on-site at /survey/240526. */}
-        <div className="my-12 rounded-2xl border border-primary/20 bg-card p-8">
-          <h2 className="font-display text-[28px] leading-tight mb-3">
-            Take the survey
-          </h2>
-          <p className="text-[17px] text-muted-foreground mb-6">
-            Auditors are already experimenting with AI. Add your perspective to
-            our AI-in-Audit research &mdash; it takes just a few minutes.
-          </p>
-          <Link
-            href="/survey/240526"
-            className="inline-block px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity"
-          >
-            Take the survey
-          </Link>
-        </div>
 
         <h2 className={prose.h2}>Sources</h2>
         <ul className={prose.ul}>
