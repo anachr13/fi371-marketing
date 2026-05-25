@@ -74,6 +74,11 @@ export default function SurveyContent() {
       setStep(1);
       return;
     }
+    const emailTrimmed = contactEmail.trim();
+    if (emailTrimmed && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
+      setError("Please enter a valid work email, or leave it blank.");
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await fetch("/api/survey", {
@@ -96,7 +101,12 @@ export default function SurveyContent() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.error || "Something went wrong. Please try again.");
+        const fieldMsg = data.fields
+          ? (Object.values(data.fields)[0] as string)
+          : null;
+        setError(
+          fieldMsg || data.error || "Something went wrong. Please try again."
+        );
         setSubmitting(false);
         return;
       }
