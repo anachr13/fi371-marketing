@@ -63,7 +63,8 @@ export const metadata: Metadata = {
 
 // Structured data: BlogPosting gives Google + AI engines a clean article entity
 // (authored/published by the Fi371 Organization defined in the root layout);
-// FAQPage exposes the on-page Q&A for rich results. @graph lets them coexist.
+// FAQPage carries the Q&A as metadata only — intentionally NOT rendered as a
+// visible section (product decision). @graph lets the two entities coexist.
 const orgId = `${SITE_URL}/#organization`;
 const jsonLd = {
   "@context": "https://schema.org",
@@ -283,14 +284,6 @@ export default function ShadowAiArticlePage() {
             Take the survey
           </Link>
         </div>
-
-        <h2 className={prose.h2}>Frequently asked questions</h2>
-        {shadowAiFaqs.map((faq) => (
-          <div key={faq.q}>
-            <h3 className={prose.h3}>{faq.q}</h3>
-            <p className={prose.p}>{faq.a}</p>
-          </div>
-        ))}
 
         <h2 className={prose.h2}>Sources</h2>
         <ul className={prose.ul}>

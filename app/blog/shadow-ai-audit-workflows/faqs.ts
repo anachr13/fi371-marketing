@@ -1,7 +1,7 @@
-// FAQ content for the "Shadow AI in audit workflows" article (B001). Shared by
-// the visible FAQ section (page.tsx body) and the FAQPage JSON-LD so the
-// structured data always matches the on-page text — required by Google for FAQ
-// rich results and trusted by AI engines (GEO). Created 2026-05-25.
+// FAQ content for the "Shadow AI in audit workflows" article (B001). Used only
+// to build the FAQPage JSON-LD (structured data) in page.tsx — the FAQ is
+// intentionally NOT rendered as a visible section, so this is metadata-only for
+// search engines and AI engines (GEO). Created 2026-05-25.
 
 export type Faq = { q: string; a: string };
 
