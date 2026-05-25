@@ -10,10 +10,9 @@ import {
   ROLE_OPTIONS,
   FIRM_TYPE_OPTIONS,
   CLIENT_TYPE_OPTIONS,
-  REPETITIVE_PART_OPTIONS,
   STEPS,
 } from "./questions";
-import { EU_COUNTRIES, OTHER_COUNTRIES } from "@/lib/countries";
+import { EU_COUNTRIES, OTHER_COUNTRIES, COUNTRY_FLAGS } from "@/lib/countries";
 
 const inputClass =
   "w-full px-[18px] py-3 bg-background border-2 border-border rounded-lg text-[19px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-colors";
@@ -25,40 +24,47 @@ const optionBase =
 const optionOn = "border-foreground bg-muted";
 const optionOff = "border-border hover:border-muted-foreground";
 
-export default function SurveyContent() {
+export default function SurveyContent({
+  initialCountry = "",
+}: {
+  initialCountry?: string;
+}) {
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
-  // Step 1 — open text
-  const [timeLost, setTimeLost] = useState("");
-  const [aiUsage, setAiUsage] = useState("");
-  // Step 2 — firm profile
-  const [role, setRole] = useState("");
-  const [firmType, setFirmType] = useState("");
-  const [country, setCountry] = useState("");
-  const [clientTypes, setClientTypes] = useState<string[]>([]);
-  // Step 3 — pain + optional contact
-  const [repetitiveParts, setRepetitiveParts] = useState<string[]>([]);
+  // Step 1 — contact details (all optional)
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactFirm, setContactFirm] = useState("");
   const [earlyAccess, setEarlyAccess] = useState(false);
+  // Step 2 — firm profile. Selecting "Other" reveals a free-text box.
+  const [role, setRole] = useState("");
+  const [roleOther, setRoleOther] = useState("");
+  const [firmType, setFirmType] = useState("");
+  const [firmTypeOther, setFirmTypeOther] = useState("");
+  const [country, setCountry] = useState(initialCountry);
+  const [clientTypes, setClientTypes] = useState<string[]>([]);
+  const [clientTypesOther, setClientTypesOther] = useState("");
+  // Step 3 — open text
+  const [timeLost, setTimeLost] = useState("");
+  const [aiUsage, setAiUsage] = useState("");
   // Honeypot
   const [website, setWebsite] = useState("");
 
   const toggle = (list: string[], value: string) =>
     list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
 
-  const step2Valid = role !== "" && firmType !== "" && country !== "";
+  // Fold any "Other" free-text into the saved answer (e.g. "Other: Tax advisor")
+  // so the downstream Sheet keeps the same columns.
+  const withOther = (value: string, other: string) =>
+    value === "Other" && other.trim() ? `Other: ${other.trim()}` : value;
 
+  // The whole survey is optional, so navigation never blocks on answers.
   const next = () => {
     setError("");
-    if (step === 1 && !step2Valid) {
-      setError("Please answer the required questions before continuing.");
-      return;
-    }
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
   };
 
@@ -69,14 +75,13 @@ export default function SurveyContent() {
 
   const submit = async () => {
     setError("");
-    if (!step2Valid) {
-      setError("Please complete role, firm type, and country (Step 2).");
-      setStep(1);
-      return;
-    }
+    setEmailError("");
+    // Email is optional, but if provided it must be valid. Show the error inline
+    // at the email field on Step 1 (contacts) and jump back there.
     const emailTrimmed = contactEmail.trim();
     if (emailTrimmed && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
-      setError("Please enter a valid work email, or leave it blank.");
+      setEmailError("Please enter a valid work email, or leave it blank.");
+      setStep(0);
       return;
     }
     setSubmitting(true);
@@ -87,11 +92,14 @@ export default function SurveyContent() {
         body: JSON.stringify({
           timeLost,
           aiUsage,
-          role,
-          firmType,
+          role: withOther(role, roleOther),
+          firmType: withOther(firmType, firmTypeOther),
           country,
-          clientTypes,
-          repetitiveParts,
+          clientTypes: clientTypes.map((c) =>
+            c === "Other" && clientTypesOther.trim()
+              ? `Other: ${clientTypesOther.trim()}`
+              : c
+          ),
           contactName,
           contactEmail,
           contactFirm,
@@ -148,11 +156,43 @@ export default function SurveyContent() {
               <h1 className="font-display text-[60px] leading-[1.1] tracking-tight mb-6">
                 How is your firm really doing audits today?
               </h1>
-              <p className="text-[19px] text-muted-foreground mb-10 leading-relaxed">
+              <p className="text-[19px] text-muted-foreground mb-8 leading-relaxed">
                 A short research survey for audit &amp; accounting
                 professionals. About 3 minutes, and it directly shapes what we
-                build. Your answers are confidential.
+                build.{" "}
+                <strong className="font-semibold text-foreground">
+                  Your answers are confidential.
+                </strong>
               </p>
+
+              {step === 0 && (
+                <div className="mb-10">
+                  <label className={labelClass}>
+                    In which country is your firm mainly based?
+                  </label>
+                  <select
+                    className={inputClass}
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                  >
+                    <option value="">Select a country</option>
+                    <optgroup label="European Union">
+                      {EU_COUNTRIES.map((c) => (
+                        <option key={c} value={c}>
+                          {COUNTRY_FLAGS[c] ? `${COUNTRY_FLAGS[c]} ${c}` : c}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Other">
+                      {OTHER_COUNTRIES.map((c) => (
+                        <option key={c} value={c}>
+                          {COUNTRY_FLAGS[c] ? `${COUNTRY_FLAGS[c]} ${c}` : c}
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
+                </div>
+              )}
 
               <div className="mb-2 flex items-center justify-between font-mono text-[13px] uppercase tracking-[0.08em] text-muted-foreground">
                 <span>{STEPS[step].kicker}</span>
@@ -178,6 +218,67 @@ export default function SurveyContent() {
                 />
 
                 {step === 0 && (
+                  <div className="flex flex-col gap-8">
+                    <div>
+                      <p className={helperClass}>
+                        Totally optional — leave your details if you&apos;d like
+                        us to follow up.
+                      </p>
+                      <div className="flex flex-col gap-4">
+                        <div>
+                          <label className={labelClass}>Name</label>
+                          <input
+                            className={inputClass}
+                            value={contactName}
+                            onChange={(e) => setContactName(e.target.value)}
+                            placeholder="Jane Smith"
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>Work email</label>
+                          <input
+                            className={inputClass}
+                            type="email"
+                            value={contactEmail}
+                            onChange={(e) => {
+                              setContactEmail(e.target.value);
+                              if (emailError) setEmailError("");
+                            }}
+                            placeholder="jane@yourfirm.com"
+                            aria-invalid={emailError ? true : undefined}
+                          />
+                          {emailError && (
+                            <p className="text-[15px] text-destructive mt-2">
+                              {emailError}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <label className={labelClass}>Firm name</label>
+                          <input
+                            className={inputClass}
+                            value={contactFirm}
+                            onChange={(e) => setContactFirm(e.target.value)}
+                            placeholder="Smith &amp; Associates"
+                          />
+                        </div>
+                        <label className="flex items-center gap-3 mt-1 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={earlyAccess}
+                            onChange={(e) => setEarlyAccess(e.target.checked)}
+                            className="accent-[hsl(var(--foreground))] h-5 w-5"
+                          />
+                          <span className="text-[17px]">
+                            Yes, contact me about early access to Fi371.
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {step === 1 && (
                   <div className="flex flex-col gap-8">
                     <div>
                       <label className={labelClass}>
@@ -208,12 +309,11 @@ export default function SurveyContent() {
                   </div>
                 )}
 
-                {step === 1 && (
+                {step === 2 && (
                   <div className="flex flex-col gap-8">
                     <div>
                       <label className={labelClass}>
-                        What best describes your role?{" "}
-                        <span className="text-destructive">*</span>
+                        What best describes your role?
                       </label>
                       <div className="flex flex-col gap-2">
                         {ROLE_OPTIONS.map((opt) => (
@@ -235,12 +335,20 @@ export default function SurveyContent() {
                           </label>
                         ))}
                       </div>
+                      {role === "Other" && (
+                        <input
+                          className={`${inputClass} mt-3`}
+                          value={roleOther}
+                          onChange={(e) => setRoleOther(e.target.value)}
+                          placeholder="Please tell us your role"
+                          maxLength={150}
+                        />
+                      )}
                     </div>
 
                     <div>
                       <label className={labelClass}>
-                        What type of firm do you work in?{" "}
-                        <span className="text-destructive">*</span>
+                        What type of firm do you work in?
                       </label>
                       <div className="flex flex-col gap-2">
                         {FIRM_TYPE_OPTIONS.map((opt) => (
@@ -262,34 +370,15 @@ export default function SurveyContent() {
                           </label>
                         ))}
                       </div>
-                    </div>
-
-                    <div>
-                      <label className={labelClass}>
-                        In which country is your firm mainly based?{" "}
-                        <span className="text-destructive">*</span>
-                      </label>
-                      <select
-                        className={inputClass}
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                      >
-                        <option value="">Select a country</option>
-                        <optgroup label="European Union">
-                          {EU_COUNTRIES.map((c) => (
-                            <option key={c} value={c}>
-                              {c}
-                            </option>
-                          ))}
-                        </optgroup>
-                        <optgroup label="Other">
-                          {OTHER_COUNTRIES.map((c) => (
-                            <option key={c} value={c}>
-                              {c}
-                            </option>
-                          ))}
-                        </optgroup>
-                      </select>
+                      {firmType === "Other" && (
+                        <input
+                          className={`${inputClass} mt-3`}
+                          value={firmTypeOther}
+                          onChange={(e) => setFirmTypeOther(e.target.value)}
+                          placeholder="Please tell us your firm type"
+                          maxLength={150}
+                        />
+                      )}
                     </div>
 
                     <div>
@@ -317,90 +406,15 @@ export default function SurveyContent() {
                           </label>
                         ))}
                       </div>
-                    </div>
-                  </div>
-                )}
-
-                {step === 2 && (
-                  <div className="flex flex-col gap-8">
-                    <div>
-                      <label className={labelClass}>
-                        Which parts of the audit feel most repetitive or manual?
-                      </label>
-                      <p className={helperClass}>Select all that apply.</p>
-                      <div className="grid sm:grid-cols-2 gap-2">
-                        {REPETITIVE_PART_OPTIONS.map((opt) => (
-                          <label
-                            key={opt}
-                            className={`${optionBase} ${
-                              repetitiveParts.includes(opt)
-                                ? optionOn
-                                : optionOff
-                            }`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={repetitiveParts.includes(opt)}
-                              onChange={() =>
-                                setRepetitiveParts((l) => toggle(l, opt))
-                              }
-                              className="accent-[hsl(var(--foreground))]"
-                            />
-                            <span className="text-[17px]">{opt}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="border-t border-border pt-8">
-                      <div className="font-mono text-[15px] font-medium tracking-[0.08em] text-muted-foreground uppercase mb-2">
-                        Optional — about you
-                      </div>
-                      <p className={helperClass}>
-                        Leave your details if you&apos;d like us to follow up.
-                        Totally optional.
-                      </p>
-                      <div className="flex flex-col gap-4">
-                        <div>
-                          <label className={labelClass}>Name</label>
-                          <input
-                            className={inputClass}
-                            value={contactName}
-                            onChange={(e) => setContactName(e.target.value)}
-                            placeholder="Jane Smith"
-                          />
-                        </div>
-                        <div>
-                          <label className={labelClass}>Work email</label>
-                          <input
-                            className={inputClass}
-                            type="email"
-                            value={contactEmail}
-                            onChange={(e) => setContactEmail(e.target.value)}
-                            placeholder="jane@yourfirm.com"
-                          />
-                        </div>
-                        <div>
-                          <label className={labelClass}>Firm name</label>
-                          <input
-                            className={inputClass}
-                            value={contactFirm}
-                            onChange={(e) => setContactFirm(e.target.value)}
-                            placeholder="Smith &amp; Associates"
-                          />
-                        </div>
-                        <label className="flex items-center gap-3 mt-1 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={earlyAccess}
-                            onChange={(e) => setEarlyAccess(e.target.checked)}
-                            className="accent-[hsl(var(--foreground))] h-5 w-5"
-                          />
-                          <span className="text-[17px]">
-                            Yes, contact me about early access to Fi371.
-                          </span>
-                        </label>
-                      </div>
+                      {clientTypes.includes("Other") && (
+                        <input
+                          className={`${inputClass} mt-3`}
+                          value={clientTypesOther}
+                          onChange={(e) => setClientTypesOther(e.target.value)}
+                          placeholder="Please tell us which client types"
+                          maxLength={150}
+                        />
+                      )}
                     </div>
                   </div>
                 )}

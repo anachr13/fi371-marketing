@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import nodemailer from "nodemailer";
 
-// Mirrors app/api/demo-request/route.ts. Required: role, firmType, country.
-// `website` is a honeypot: bots fill it, humans never see it, so a non-empty
-// value means spam and we silently discard it.
+// Mirrors app/api/demo-request/route.ts. Every field is optional — the survey
+// is intentionally low-friction. The max lengths on role/firmType/clientTypes
+// allow for an "Other: <free text>" value. `website` is a honeypot: bots fill
+// it, humans never see it, so a non-empty value means spam and we discard it.
 const schema = z.object({
   timeLost: z.string().trim().max(2000).optional().default(""),
   aiUsage: z.string().trim().max(2000).optional().default(""),
-  role: z.string().trim().min(1, "Please select your role").max(100),
-  firmType: z.string().trim().min(1, "Please select your firm type").max(100),
-  country: z.string().trim().min(1, "Please select your country").max(100),
-  clientTypes: z.array(z.string().max(100)).max(30).optional().default([]),
-  repetitiveParts: z.array(z.string().max(100)).max(30).optional().default([]),
+  role: z.string().trim().max(200).optional().default(""),
+  firmType: z.string().trim().max(200).optional().default(""),
+  country: z.string().trim().max(100).optional().default(""),
+  clientTypes: z.array(z.string().max(200)).max(30).optional().default([]),
   contactName: z.string().trim().max(120).optional().default(""),
   contactEmail: z
     .union([z.string().trim().email(), z.literal("")])
@@ -102,11 +102,10 @@ export async function POST(request: NextRequest) {
         text: [
           "New AI-in-audit survey response:",
           "",
-          `Role: ${data.role}`,
-          `Firm type: ${data.firmType}`,
-          `Country: ${data.country}`,
+          `Role: ${data.role || "—"}`,
+          `Firm type: ${data.firmType || "—"}`,
+          `Country: ${data.country || "—"}`,
           `Client types: ${data.clientTypes.join(", ") || "—"}`,
-          `Repetitive parts: ${data.repetitiveParts.join(", ") || "—"}`,
           "",
           `Time lost / to automate: ${data.timeLost || "—"}`,
           `AI usage & impact: ${data.aiUsage || "—"}`,
