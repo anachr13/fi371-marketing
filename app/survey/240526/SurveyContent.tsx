@@ -67,8 +67,7 @@ export default function SurveyContent() {
     setStep((s) => Math.max(s - 1, 0));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const submit = async () => {
     setError("");
     if (!step2Valid) {
       setError("Please complete role, firm type, and country (Step 2).");
@@ -156,7 +155,7 @@ export default function SurveyContent() {
                 />
               </div>
 
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={(e) => e.preventDefault()}>
                 <input
                   type="text"
                   name="website"
@@ -414,6 +413,7 @@ export default function SurveyContent() {
                   )}
                   {step < STEPS.length - 1 ? (
                     <button
+                      key="continue"
                       type="button"
                       onClick={next}
                       className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity"
@@ -422,7 +422,9 @@ export default function SurveyContent() {
                     </button>
                   ) : (
                     <button
-                      type="submit"
+                      key="submit"
+                      type="button"
+                      onClick={submit}
                       disabled={submitting}
                       className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
                     >
