@@ -220,15 +220,26 @@ export default function SurveyContent({
               </div>
 
               <form onSubmit={(e) => e.preventDefault()}>
+                {/* Spam honeypot: hidden from humans, bots fill it, so a
+                    non-empty value makes the API discard the submission.
+                    DO NOT name this "website"/"url"/"email" etc. and DO NOT make
+                    it visible: browser autofill & password managers fill such
+                    fields automatically, which silently flagged REAL
+                    respondents as bots and dropped their answers (their browser
+                    showed "Thank you" but nothing reached the Sheet). An opaque
+                    name + display:none keeps autofill away while still catching
+                    bots that blindly fill every input. Still submitted under the
+                    `website` key to match the API schema. */}
                 <input
                   type="text"
-                  name="website"
+                  name="hp_token"
+                  id="hp_token"
                   tabIndex={-1}
                   autoComplete="off"
                   aria-hidden="true"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
-                  className="absolute left-[-9999px] top-[-9999px] h-0 w-0 opacity-0"
+                  className="hidden"
                 />
 
                 {step === 0 && (
