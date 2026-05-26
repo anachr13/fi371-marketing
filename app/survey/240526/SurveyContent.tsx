@@ -86,12 +86,6 @@ export default function SurveyContent({
     }
     setSubmitting(true);
 
-    // The request waits on an external Google Apps Script (~3s, occasionally
-    // slower). Cap the wait at 20s so a stalled save can never leave the
-    // visitor staring at a spinner forever — surface a retryable message.
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
-
     try {
       const res = await fetch("/api/survey", {
         method: "POST",
@@ -113,7 +107,6 @@ export default function SurveyContent({
           earlyAccess,
           website,
         }),
-        signal: controller.signal,
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -128,15 +121,14 @@ export default function SurveyContent({
       }
       setSubmitting(false);
       setSubmitted(true);
-    } catch (err) {
-      setError(
-        err instanceof DOMException && err.name === "AbortError"
-          ? "That took longer than expected — your connection may be slow. Please try again."
-          : "Network error. Please try again."
-      );
+    } catch {
+      // No client-side timeout on purpose: a slow-but-successful save must not
+      // be aborted and retried, which can write the response to the Sheet
+      // twice (the append is not idempotent) and skew the research data. The
+      // "Saving…" spinner keeps the wait honest; the server/Vercel function
+      // timeout bounds a genuinely hung request and surfaces here as an error.
+      setError("Network error. Please try again.");
       setSubmitting(false);
-    } finally {
-      clearTimeout(timeout);
     }
   };
 
