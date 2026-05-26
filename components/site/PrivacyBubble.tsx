@@ -9,6 +9,7 @@
 // pure CSS (tailwindcss-animate), so no effect/state is needed beyond open/closed.
 
 import { useState } from "react";
+import { Cookie } from "lucide-react";
 
 /**
  * Floating, dismissible privacy notice anchored to the bottom-right.
@@ -29,8 +30,11 @@ export default function PrivacyBubble() {
       className="fixed bottom-4 left-4 right-4 z-50 duration-300 ease-out animate-in fade-in slide-in-from-bottom-2 sm:left-auto sm:max-w-[320px]"
     >
       <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 shadow-lg">
+        <Cookie className="h-5 w-5 shrink-0 text-foreground" aria-hidden="true" />
         <p className="text-[14px] leading-snug text-muted-foreground">
-          We&apos;re currently not using any cookies or analytics on this page.
+          We&apos;re currently{" "}
+          <strong className="font-semibold text-foreground">not using</strong>{" "}
+          any cookies or analytics on this page.
         </p>
         <button
           type="button"
