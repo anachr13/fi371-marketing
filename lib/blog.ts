@@ -7,14 +7,25 @@ export type BlogPost = {
   title: string;
   description: string;
   category: string;
-  date: string; // ISO publish date
+  date: string; // ISO 8601 publish date — prefer a full datetime + timezone
   readingMinutes: number;
 };
 
 /** Published articles, newest first. Populated as articles ship from the
- *  content calendar / n8n pipeline. Empty for now (the hand-written crypto
- *  draft was removed — content should not default to a crypto angle). */
-export const blogPosts: BlogPost[] = [];
+ *  content calendar / n8n pipeline. Each entry must have a matching hand-built
+ *  page at app/blog/<slug>/page.tsx. */
+export const blogPosts: BlogPost[] = [
+  {
+    slug: "shadow-ai-audit-workflows",
+    title:
+      "AI Is Already Entering Audit Workflows — But Mostly in Unofficial Ways",
+    description:
+      "Explore how auditors are already experimenting with AI, what Shadow AI means for audit firms, and how teams can move toward safer, more controlled AI workflows.",
+    category: "AI in Audit",
+    date: "2026-05-25T09:00:00+02:00",
+    readingMinutes: 6,
+  },
+];
 
 /** Look up a single post by slug (used by article pages for shared metadata). */
 export function getBlogPost(slug: string): BlogPost | undefined {
