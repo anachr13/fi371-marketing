@@ -85,6 +85,13 @@ export default function SurveyContent({
       return;
     }
     setSubmitting(true);
+
+    // The request waits on an external Google Apps Script (~3s, occasionally
+    // slower). Cap the wait at 20s so a stalled save can never leave the
+    // visitor staring at a spinner forever — surface a retryable message.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+
     try {
       const res = await fetch("/api/survey", {
         method: "POST",
@@ -106,6 +113,7 @@ export default function SurveyContent({
           earlyAccess,
           website,
         }),
+        signal: controller.signal,
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -120,9 +128,15 @@ export default function SurveyContent({
       }
       setSubmitting(false);
       setSubmitted(true);
-    } catch {
-      setError("Network error. Please try again.");
+    } catch (err) {
+      setError(
+        err instanceof DOMException && err.name === "AbortError"
+          ? "That took longer than expected — your connection may be slow. Please try again."
+          : "Network error. Please try again."
+      );
       setSubmitting(false);
+    } finally {
+      clearTimeout(timeout);
     }
   };
 
@@ -452,10 +466,29 @@ export default function SurveyContent({
                       disabled={submitting}
                       className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
                     >
-                      {submitting ? "Submitting…" : "Submit"}
+                      {submitting ? (
+                        <span className="inline-flex items-center gap-2">
+                          <span
+                            className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+                            aria-hidden="true"
+                          />
+                          Saving…
+                        </span>
+                      ) : (
+                        "Submit"
+                      )}
                     </button>
                   )}
                 </div>
+
+                {submitting && (
+                  <p
+                    className="mt-4 text-[15px] text-muted-foreground"
+                    aria-live="polite"
+                  >
+                    Saving your response — this can take a few seconds.
+                  </p>
+                )}
               </form>
             </>
           ) : (
