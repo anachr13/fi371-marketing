@@ -15,6 +15,9 @@ type Props = {
   date: string; // ISO
   readingMinutes: number;
   children: React.ReactNode;
+  /** Optional content rendered after the demo CTA and before the footer
+   *  (e.g. a FAQ accordion). Kept in the reading column. */
+  belowCta?: React.ReactNode;
 };
 
 function formatDate(iso: string) {
@@ -34,6 +37,7 @@ export default function ArticleShell({
   date,
   readingMinutes,
   children,
+  belowCta,
 }: Props) {
   const [demoOpen, setDemoOpen] = useState(false);
   const openDemo = () => setDemoOpen(true);
@@ -77,6 +81,8 @@ export default function ArticleShell({
               </button>
             </div>
           </div>
+
+          {belowCta}
         </article>
       </main>
 

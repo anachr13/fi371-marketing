@@ -44,6 +44,10 @@ const TAGS = [
 
 const CANONICAL_PATH = `/blog/${SLUG}`;
 const ABSOLUTE_URL = `${SITE_URL}${CANONICAL_PATH}`;
+// Site OG image (dynamic route at app/opengraph-image.tsx). Setting a custom
+// `openGraph` on this route suppresses the inherited file-based image, so we
+// reference it explicitly for both social cards and BlogPosting.image.
+const OG_IMAGE = "/opengraph-image";
 
 export const metadata: Metadata = {
   title: SEO_TITLE,
@@ -58,13 +62,18 @@ export const metadata: Metadata = {
     publishedTime: date,
     authors: [SITE_NAME],
     tags: TAGS,
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    images: [OG_IMAGE],
   },
 };
 
 // Structured data: BlogPosting gives Google + AI engines a clean article entity
 // (authored/published by the Fi371 Organization defined in the root layout);
-// FAQPage carries the Q&A as metadata only — intentionally NOT rendered as a
-// visible section (product decision). @graph lets the two entities coexist.
+// FAQPage mirrors the visible FAQ accordion at the foot of the page (both built
+// from faqs.ts, so schema always matches on-page text — Google requires this).
+// @graph lets the two entities coexist.
 const orgId = `${SITE_URL}/#organization`;
 const jsonLd = {
   "@context": "https://schema.org",
@@ -74,6 +83,7 @@ const jsonLd = {
       "@id": `${ABSOLUTE_URL}#article`,
       headline: title,
       description,
+      image: `${SITE_URL}${OG_IMAGE}`,
       datePublished: date,
       dateModified: date,
       inLanguage: "en",
@@ -100,6 +110,33 @@ const jsonLd = {
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 export default function ShadowAiArticlePage() {
+  // Visible FAQ as a native <details> accordion (no client JS) so the answers
+  // are in the server-rendered HTML — best for crawlers and answer engines —
+  // while staying collapsed and tidy. Matches the FAQPage JSON-LD above.
+  const faqSection = (
+    <section className="mt-16 pt-10 border-t border-border">
+      <h2 className={prose.h2}>Frequently asked questions</h2>
+      <div className="flex flex-col gap-3">
+        {shadowAiFaqs.map((faq) => (
+          <details
+            key={faq.q}
+            className="group rounded-lg border border-border overflow-hidden"
+          >
+            <summary className="flex cursor-pointer list-none items-center justify-between px-6 py-4 text-[19px] font-semibold hover:bg-card transition-colors [&::-webkit-details-marker]:hidden">
+              {faq.q}
+              <span className="ml-5 text-[22px] text-muted-foreground transition-transform group-open:rotate-45">
+                +
+              </span>
+            </summary>
+            <div className="px-6 pb-5 text-[17px] leading-relaxed text-muted-foreground">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+
   return (
     <>
       <JsonLd data={jsonLd} />
@@ -108,6 +145,7 @@ export default function ShadowAiArticlePage() {
         title={title}
         date={date}
         readingMinutes={readingMinutes}
+        belowCta={faqSection}
       >
         <p className={prose.lead}>
           Auditors are already starting to explore artificial intelligence in

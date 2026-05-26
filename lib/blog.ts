@@ -7,7 +7,7 @@ export type BlogPost = {
   title: string;
   description: string;
   category: string;
-  date: string; // ISO publish date
+  date: string; // ISO 8601 publish date — prefer a full datetime + timezone
   readingMinutes: number;
 };
 
@@ -22,7 +22,7 @@ export const blogPosts: BlogPost[] = [
     description:
       "Explore how auditors are already experimenting with AI, what Shadow AI means for audit firms, and how teams can move toward safer, more controlled AI workflows.",
     category: "AI in Audit",
-    date: "2026-05-25",
+    date: "2026-05-25T09:00:00+02:00",
     readingMinutes: 6,
   },
 ];
