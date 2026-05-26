@@ -1,8 +1,8 @@
 "use client";
 
-// PrivacyBubble — dismissible privacy notice for the survey page.
+// PrivacyBubble — dismissible privacy notice for public marketing pages.
 // Author: Fi371 · 2026-05-26
-// Purpose: reassure visitors that this page sets no cookies and runs no
+// Purpose: reassure visitors that the page sets no cookies and runs no
 // analytics. Dismissal is in-memory only (no cookie, no localStorage), which
 // keeps the notice's own claim literally true. Neutral warm-paper tokens only —
 // chartreuse is reserved for AI elements per DESIGN.md. The entrance fade-up is
@@ -12,8 +12,8 @@ import { useState } from "react";
 
 /**
  * Floating, dismissible privacy notice anchored to the bottom-right.
- * Clicking "OK" hides it for the rest of the visit (state resets on reload,
- * since nothing is stored).
+ * Rendered per-page (currently the homepage and /blog), so its open/closed
+ * state is independent on each page and resets on reload — nothing is stored.
  *
  * @returns The bubble while visible, or null once the user dismisses it.
  */
