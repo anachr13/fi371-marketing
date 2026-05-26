@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import SurveyContent from "./SurveyContent";
+import PrivacyBubble from "./PrivacyBubble";
 import { CODE_TO_COUNTRY } from "@/lib/countries";
 
 export const metadata: Metadata = {
@@ -21,5 +22,10 @@ export default async function SurveyPage() {
   const countryCode = (await headers()).get("x-vercel-ip-country");
   const initialCountry = (countryCode && CODE_TO_COUNTRY[countryCode]) || "";
 
-  return <SurveyContent initialCountry={initialCountry} />;
+  return (
+    <>
+      <SurveyContent initialCountry={initialCountry} />
+      <PrivacyBubble />
+    </>
+  );
 }
