@@ -85,6 +85,7 @@ export default function SurveyContent({
       return;
     }
     setSubmitting(true);
+
     try {
       const res = await fetch("/api/survey", {
         method: "POST",
@@ -121,6 +122,11 @@ export default function SurveyContent({
       setSubmitting(false);
       setSubmitted(true);
     } catch {
+      // No client-side timeout on purpose: a slow-but-successful save must not
+      // be aborted and retried, which can write the response to the Sheet
+      // twice (the append is not idempotent) and skew the research data. The
+      // "Saving…" spinner keeps the wait honest; the server/Vercel function
+      // timeout bounds a genuinely hung request and surfaces here as an error.
       setError("Network error. Please try again.");
       setSubmitting(false);
     }
@@ -206,15 +212,26 @@ export default function SurveyContent({
               </div>
 
               <form onSubmit={(e) => e.preventDefault()}>
+                {/* Spam honeypot: hidden from humans, bots fill it, so a
+                    non-empty value makes the API discard the submission.
+                    DO NOT name this "website"/"url"/"email" etc. and DO NOT make
+                    it visible: browser autofill & password managers fill such
+                    fields automatically, which silently flagged REAL
+                    respondents as bots and dropped their answers (their browser
+                    showed "Thank you" but nothing reached the Sheet). An opaque
+                    name + display:none keeps autofill away while still catching
+                    bots that blindly fill every input. Still submitted under the
+                    `website` key to match the API schema. */}
                 <input
                   type="text"
-                  name="website"
+                  name="hp_token"
+                  id="hp_token"
                   tabIndex={-1}
                   autoComplete="off"
                   aria-hidden="true"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
-                  className="absolute left-[-9999px] top-[-9999px] h-0 w-0 opacity-0"
+                  className="hidden"
                 />
 
                 {step === 0 && (
@@ -452,10 +469,29 @@ export default function SurveyContent({
                       disabled={submitting}
                       className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
                     >
-                      {submitting ? "Submitting…" : "Submit"}
+                      {submitting ? (
+                        <span className="inline-flex items-center gap-2">
+                          <span
+                            className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+                            aria-hidden="true"
+                          />
+                          Saving…
+                        </span>
+                      ) : (
+                        "Submit"
+                      )}
                     </button>
                   )}
                 </div>
+
+                {submitting && (
+                  <p
+                    className="mt-4 text-[15px] text-muted-foreground"
+                    aria-live="polite"
+                  >
+                    Saving your response — this can take a few seconds.
+                  </p>
+                )}
               </form>
             </>
           ) : (

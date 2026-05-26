@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { z } from "zod";
 import nodemailer from "nodemailer";
 
@@ -84,43 +84,49 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Best-effort notification email — failure here must not fail the request.
-    try {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_APP_PASSWORD,
-        },
-      });
-      await transporter.sendMail({
-        from: process.env.GMAIL_USER,
-        to: process.env.NOTIFICATION_EMAIL,
-        subject: `New survey response${
-          data.contactFirm ? ` — ${data.contactFirm}` : ""
-        }`,
-        text: [
-          "New AI-in-audit survey response:",
-          "",
-          `Role: ${data.role || "—"}`,
-          `Firm type: ${data.firmType || "—"}`,
-          `Country: ${data.country || "—"}`,
-          `Client types: ${data.clientTypes.join(", ") || "—"}`,
-          "",
-          `Time lost / to automate: ${data.timeLost || "—"}`,
-          `AI usage & impact: ${data.aiUsage || "—"}`,
-          "",
-          `Contact: ${data.contactName || "—"} / ${
-            data.contactEmail || "—"
-          } / ${data.contactFirm || "—"}`,
-          `Early access: ${data.earlyAccess ? "Yes" : "No"}`,
-          "",
-          `Submitted at: ${new Date().toISOString()}`,
-        ].join("\n"),
-      });
-    } catch (emailError) {
-      console.error("Email notification failed:", emailError);
-    }
+    // The Sheet write succeeded — that's the only thing the visitor waits on.
+    // Send the notification email AFTER the response (via Next's `after`, which
+    // uses Vercel's waitUntil under the hood) so a slow Gmail SMTP handshake
+    // doesn't add seconds to the visitor's "Saving…" wait. Best-effort: any
+    // failure is logged but never affects the already-sent success response.
+    after(async () => {
+      try {
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_APP_PASSWORD,
+          },
+        });
+        await transporter.sendMail({
+          from: process.env.GMAIL_USER,
+          to: process.env.NOTIFICATION_EMAIL,
+          subject: `New survey response${
+            data.contactFirm ? ` — ${data.contactFirm}` : ""
+          }`,
+          text: [
+            "New AI-in-audit survey response:",
+            "",
+            `Role: ${data.role || "—"}`,
+            `Firm type: ${data.firmType || "—"}`,
+            `Country: ${data.country || "—"}`,
+            `Client types: ${data.clientTypes.join(", ") || "—"}`,
+            "",
+            `Time lost / to automate: ${data.timeLost || "—"}`,
+            `AI usage & impact: ${data.aiUsage || "—"}`,
+            "",
+            `Contact: ${data.contactName || "—"} / ${
+              data.contactEmail || "—"
+            } / ${data.contactFirm || "—"}`,
+            `Early access: ${data.earlyAccess ? "Yes" : "No"}`,
+            "",
+            `Submitted at: ${new Date().toISOString()}`,
+          ].join("\n"),
+        });
+      } catch (emailError) {
+        console.error("Email notification failed:", emailError);
+      }
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
