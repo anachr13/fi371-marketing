@@ -1,7 +1,8 @@
 "use client";
 // One story card. `featured` renders a full-width horizontal layout for the daily top story.
-// Thumbnail uses next/image with a graceful fallback to a tinted placeholder. Chartreuse
-// (bg-primary) badge is reserved for AI-related items per DESIGN.md.
+// When an item has an image it renders via next/image; with no image (or on load error) the
+// card is text-first with no media well. Chartreuse (bg-primary) badge is reserved for
+// AI-related items per DESIGN.md.
 
 import Image from "next/image";
 import { useState } from "react";
