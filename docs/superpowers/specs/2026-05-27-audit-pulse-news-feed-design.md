@@ -4,6 +4,7 @@
 - **Status:** Approved (ready for implementation plan)
 - **Owner:** Christos / Fi371
 - **Repo:** fi371-marketing (Next.js 16.2.4, Tailwind, shadcn/ui, Supabase, Vercel)
+- **Revisions:** rev 2 — public access clarified, infinite scroll (no visible pagination), launch backfill of ~30 days
 
 ---
 
@@ -14,11 +15,13 @@ stories across financial audit, accounting, AI-in-audit, regulation, sustainabil
 assurance, audit technology, and security/governance. Each item shows a **title, short
 summary, source, media-type, and a link out**. It is a growing, search-friendly content
 library intended as an SEO/GEO asset (fresh content that earns search ranking and AI-search
-citations) and a secondary content-sourcing radar.
+citations) and a secondary content-sourcing radar. The page is **fully public** (no login)
+and **pre-filled with the last ~30 days** at launch, so it opens full, not empty.
 
 The **engine that finds, ranks, and summarises** stories runs in **n8n** (existing
-automation). This repo is the **home** for the news: a database, a secure ingest endpoint,
-the public page, and a hide control. The n8n workflow is **out of scope** for this spec.
+automation). This repo is the **home** for the news: a database, a secure ingest endpoint, a
+public read endpoint, the public page, and a hide control. The n8n workflow is **out of
+scope** for this spec.
 
 ---
 
@@ -27,16 +30,20 @@ the public page, and a hide control. The n8n workflow is **out of scope** for th
 | Decision | Choice |
 |---|---|
 | Audience / placement | **Public** page on the marketing site |
+| Access | **Fully public** — no login/account to view; only the private hide tool is password-protected |
 | Curation model | **Auto-publish + guardrails** (trusted sources, validation, 1-click hide) |
 | Engine location | **n8n** finds/ranks/summarises; posts items into this site |
 | Feed scope | **Top ~5–10 items/day + a growing, browsable archive** |
 | Media handling | **Link out** with media-type badge + thumbnail (no embeds — GDPR-safe) |
 | Layout | **Clean Feed** — category chips + uniform card grid, newest first, day-grouped |
+| Browsing | **Infinite scroll** — first screen server-rendered (SEO); more loads automatically as you scroll, no visible pagination |
+| Launch data | **Pre-filled with ~the last 30 days** via the engine's first-run backfill |
 | Name / URL | **"Audit Pulse"**, served at **`/news`** |
 
 ## 3. Out of scope (explicitly)
 
-- The **n8n workflow** itself (discovery, ranking, summarisation). Designed separately next.
+- The **n8n workflow** itself (discovery, ranking, summarisation, the launch backfill source).
+  Designed separately next.
 - **Inline media players / embeds** (rejected for privacy/GDPR).
 - **RSS/JSON feed output** — desirable fast-follow, not v1 (see §15).
 - **Per-category landing pages** (`/news/[category]`) — v1 uses a query param; dedicated
@@ -48,21 +55,25 @@ the public page, and a hide control. The n8n workflow is **out of scope** for th
 ## 4. Architecture overview
 
 ```
-n8n (daily)                         This repo (fi371-marketing)
------------                         ---------------------------
+n8n (daily + one-time backfill)     This repo (fi371-marketing)
+-------------------------------     ---------------------------
 scan ~45 sources                    POST /api/news/ingest   (secure inbox)
 rank "biggest"                  -->    - verify secret key
 write title + summary                  - validate each item
 grab thumbnail + media type            - drop duplicates (by link)
 assign category + AI flag              - insert into Supabase
-                                       - refresh /news
+(first run: look back ~30 days)        - refresh /news
                                             |
                                             v
                                     Supabase table: news_items
                                             |
-                                            v
-                                    /news  ("Audit Pulse" public page)
-                                    /admin/news  (password-gated hide control)
+                            +---------------+----------------+
+                            v                                v
+                  /news (server-rendered            GET /api/news/list
+                   first batch + JSON-LD)            (cursor batches for
+                            |                         infinite scroll)
+                            v
+                  /admin/news (password-gated hide control)
 ```
 
 - **Freshness model:** the page is statically rendered and **revalidated on demand** right
@@ -84,7 +95,7 @@ assign category + AI flag              - insert into Supabase
 |---|---|---|
 | `id` | uuid | PK, default `gen_random_uuid()` |
 | `created_at` | timestamptz | default `now()` — when we received it |
-| `published_at` | timestamptz | **required** — the story's date; drives ordering + day groups |
+| `published_at` | timestamptz | **required** — the story's date (may be back-dated for backfill); drives ordering + day groups |
 | `title` | text | **required** |
 | `summary` | text | **required** — 1–2 sentence original summary |
 | `url` | text | **required**, **unique** — source link + dedup key |
@@ -97,10 +108,10 @@ assign category + AI flag              - insert into Supabase
 | `hidden` | boolean | not null, default `false` — the guardrail off-switch |
 
 **Constraints / indexes:**
-- `UNIQUE (url)` — dedup at the database level.
+- `UNIQUE (url)` — dedup at the database level (makes backfill re-runs safe).
 - `CHECK` constraints on `media_type` and `category` against the fixed sets.
-- Index on `(hidden, published_at DESC)` for the main public query.
-- Index on `(category, hidden, published_at DESC)` for filtered views.
+- Index on `(hidden, published_at DESC, id DESC)` for the main public query + keyset cursor.
+- Index on `(category, hidden, published_at DESC, id DESC)` for filtered views.
 
 **Migration:** SQL stored at `db/news_items.sql` (reference) and applied to Supabase via the
 Supabase dashboard or the Supabase MCP `apply_migration`. Service-role access is via the
@@ -127,11 +138,34 @@ The single secure "inbox" n8n posts to. Mirrors the existing survey shared-secre
 - **Errors:** `401` bad/missing key; `400` malformed body or all items invalid; `413` if
   batch > 50.
 
+### 6a. List API — `GET /api/news/list` (powers infinite scroll)
+
+Public, read-only endpoint the feed calls to append the next batch as the reader scrolls.
+
+- **Query:** `category` (optional slug), `cursor` (optional — opaque keyset cursor encoding
+  the last item's `published_at` + `id`), `limit` (default 24, max 50).
+- **Returns:** `{ items: [...], nextCursor: string | null }`. Only `hidden = false` rows,
+  newest first, **keyset (cursor) pagination** — stable even as new items arrive at the top.
+- No secret needed (it only ever exposes already-public items).
+
+### 6b. Initial backfill (launch data)
+
+The page must open **pre-filled with ~the last 30 days**, not empty.
+
+- The **back-dated items are produced by the engine's first run** (n8n configured to look
+  back ~30 days) — that work is part of the separate n8n build (§3), not this repo.
+- **This repo is fully ready for it:** `published_at` accepts past dates, day-grouping renders
+  historical days correctly, and `ON CONFLICT (url)` makes re-posting safe. Because a month is
+  ~150–300 items (> the 50/batch cap), the backfill arrives as **several batches of ≤ 50** —
+  no special endpoint needed.
+- Net effect: the page is **live and indexable from day one**; the empty state (§12) becomes
+  a safety net rather than the launch experience.
+
 ---
 
 ## 7. Public page — `/news` ("Audit Pulse")
 
-`app/news/page.tsx` — server component.
+`app/news/page.tsx` — server component. **Fully public — no login or account to read it.**
 
 - **Reads** published items (`hidden = false`) newest-first, grouped by calendar day, via
   `lib/news.ts`.
@@ -143,9 +177,10 @@ The single secure "inbox" n8n posts to. Mirrors the existing survey shared-secre
   what helps Google and AI search understand and cite the page.
 - **Filtering:** category via `?category=<slug>` (server-filtered). Each filter is a real,
   indexable URL; `generateMetadata` adjusts title + canonical per category.
-- **Pagination / archive:** server-paginated by `?page=N` (page size ~24). "Load older
-  stories" is a link to the next page (`rel="next"`/`"prev"` set). Indexable, no client JS
-  required.
+- **Browsing / archive — infinite scroll:** the page **server-renders the first batch**
+  (≈ the most recent 24 items / few days) for SEO and fast first paint, then **auto-loads
+  more as the reader nears the bottom** (client-side, via the §6a list endpoint). No page
+  numbers, no "load more" button. Keeps a quiet "You're all caught up" end-state.
 - **Day grouping:** headers render "Today", "Yesterday", then the full date.
 - Registered in **sitemap** and linked from the **site nav** (and/or footer).
 
@@ -153,18 +188,22 @@ The single secure "inbox" n8n posts to. Mirrors the existing survey shared-secre
 
 ## 8. Feed UI — `components/news/`
 
-Server-rendered (chips + pagination are links → minimal/no client JS, fast, matches the
-design system's "minimal-functional" motion). Subtle staggered fade-up entrance (framer-motion,
-already a dependency) is optional polish.
+Hybrid: the first batch + category chips are **server-rendered** (SEO, fast first paint); the
+feed list is a **client component** that appends further batches on scroll. Subtle staggered
+fade-up entrance (framer-motion, already a dependency) is optional polish.
 
-- **`NewsFeed.tsx`** — receives grouped items; renders day-group headers + the grid.
+- **`NewsFeed.tsx`** (client) — receives the server-rendered first batch + initial cursor;
+  renders day-group headers + the grid; uses an `IntersectionObserver` sentinel near the
+  bottom to fetch the next batch from `GET /api/news/list` (§6a) and append, re-grouping by
+  day. Shows a small loading shimmer while fetching and a quiet "You're all caught up" when
+  the cursor is exhausted.
 - **`NewsCard.tsx`** — thumbnail (`next/image`, fallback to tinted placeholder on
   missing/broken), badge row (`media_type · source_name`; chartreuse **AI** badge when
   `is_ai_related`), title (links to `url`, `target="_blank" rel="noopener noreferrer"`),
   summary, footer (date · category label · "Read/Watch/Listen →").
 - **`CategoryFilter.tsx`** — the six category chips + "All", rendered as links; active state
   reflects the current `?category`.
-- **Top story:** on the unfiltered page 1 only, the highest-`importance` item of the most
+- **Top story:** on the unfiltered first batch only, the highest-`importance` item of the most
   recent day renders as a **full-width** card (ties broken by most recent). All others are
   uniform cards.
 
@@ -194,9 +233,12 @@ Both sets live as typed constants in `lib/news.ts` (single source of truth for t
 
 ## 10. Admin / hide control — `/admin/news`
 
+> The **public `/news` page is never gated** — no login or account to read it. This section
+> covers only the private hide tool.
+
 - **Auth:** lightweight single-password gate. A simple form accepts `NEWS_ADMIN_PASSWORD`
-  and sets a signed/httpOnly cookie; `/admin/news` requires it (enforced in the route or
-  middleware). Not a multi-user auth system (YAGNI — one operator).
+  and sets a signed, httpOnly cookie; `/admin/news` requires it (enforced in the route or
+  middleware). Not a multi-user auth system (YAGNI — one operator, one shared password).
 - **UI:** lists recent items (including hidden ones) with a hide/unhide **toggle**.
 - **Action:** a server action flips `hidden` and calls `revalidatePath('/news')`.
 
@@ -218,11 +260,12 @@ Both sets live as typed constants in `lib/news.ts` (single source of truth for t
 - **Bad ingest key / payload:** rejected with `401`/`400`; never partially trusts input.
 - **Duplicate story:** silently de-duplicated (counted in the response).
 - **Missing thumbnail / broken image:** placeholder fallback, no layout break.
-- **No news yet (launch):** tasteful empty state + `noindex` until items exist.
+- **No news yet:** tasteful empty state + `noindex` until items exist. In practice the launch
+  backfill (§6b) fills the page before go-live, so this is a safety net, not the launch view.
 - **n8n down for a day:** page keeps showing the latest items; no error surface.
 - **Unknown category / media type from n8n:** rejected by validation (kept off the page).
 - **Supabase unavailable on read:** page renders a graceful "temporarily unavailable" state
-  rather than crashing.
+  rather than crashing; the infinite-scroll endpoint returns an error the client shows quietly.
 
 ---
 
@@ -239,10 +282,12 @@ Both sets live as typed constants in `lib/news.ts` (single source of truth for t
 
 No unit-test suite in this project (per repo convention). Validate via:
 - `npm run lint` and `npm run build` must pass (build = `tsc`).
-- **Manual QA:** load `/news`; test category filters, "load older", empty state, mobile
-  layout, dark mode; exercise the `/admin/news` hide/unhide flow.
+- **Manual QA:** load `/news`; test category filters, **infinite scroll** (loads on scroll,
+  end-state, filtered scroll), empty state, mobile layout, dark mode; exercise the
+  `/admin/news` hide/unhide flow.
 - **Ingest tests (curl):** valid item appears on the page; a duplicate is rejected as such;
-  a wrong/missing key returns `401`; a malformed item returns `400`.
+  a wrong/missing key returns `401`; a malformed item returns `400`; a multi-batch backfill
+  with back-dated items renders under the right day headers.
 - **Production verification after merge** (Vercel previews are login-walled).
 
 ---
@@ -250,10 +295,11 @@ No unit-test suite in this project (per repo convention). Validate via:
 ## 15. Future / fast-follow (not v1)
 
 - Publish Audit Pulse as an **RSS/JSON feed** (fitting + good for distribution/GEO).
-- **Per-category landing pages** (`/news/[category]`) for stronger topic SEO.
+- **Per-category landing pages** (`/news/[category]`) for stronger topic SEO (and deeper
+  crawlability beyond the server-rendered first batch).
 - **Thumbnails → Supabase Storage** for fully first-party images.
 - **Manual "add story"** in the admin (for hand-picked items).
-- The **n8n discovery/ranking/summarisation workflow** (separate design).
+- The **n8n discovery/ranking/summarisation workflow + the 30-day backfill run** (separate design).
 
 ---
 
@@ -262,10 +308,11 @@ No unit-test suite in this project (per repo convention). Validate via:
 | File | Change |
 |---|---|
 | `db/news_items.sql` | New — table + constraints + indexes (applied to Supabase) |
-| `lib/news.ts` | New — types, category/media constants, read helpers (mirrors `lib/blog.ts`) |
-| `app/api/news/ingest/route.ts` | New — secure inbox (auth, zod validation, dedup, revalidate) |
-| `app/news/page.tsx` | New — public page, metadata, JSON-LD, filtering, pagination |
-| `components/news/NewsFeed.tsx` | New — day-grouped grid |
+| `lib/news.ts` | New — types, category/media constants, read + keyset-cursor helpers (mirrors `lib/blog.ts`) |
+| `app/api/news/ingest/route.ts` | New — secure inbox (auth, zod validation, dedup, revalidate, batch backfill) |
+| `app/api/news/list/route.ts` | New — public read endpoint powering infinite scroll (cursor-based) |
+| `app/news/page.tsx` | New — public page, metadata, JSON-LD, category filter, server-rendered first batch |
+| `components/news/NewsFeed.tsx` | New — client; day-grouped grid + infinite scroll |
 | `components/news/NewsCard.tsx` | New — card (thumbnail, badges, link out) |
 | `components/news/CategoryFilter.tsx` | New — chip filter (links) |
 | `app/admin/news/page.tsx` | New — password-gated hide/unhide list |
