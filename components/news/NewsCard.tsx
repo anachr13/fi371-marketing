@@ -109,7 +109,7 @@ export default function NewsCard({
       )}
       <div className="flex flex-1 flex-col p-3.5">
         {badges}
-        <h3 className="font-semibold text-[15.5px] leading-snug mb-1.5">
+        <h3 className="text-[17px] leading-snug mb-1.5">
           <a href={item.url} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-4">
             {item.title}
           </a>
