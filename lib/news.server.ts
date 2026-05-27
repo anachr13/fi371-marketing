@@ -45,6 +45,8 @@ function rowToItem(row: NewsRow): NewsItem {
 // --- Keyset cursor (published_at + id) for stable infinite scroll ---
 export type Cursor = { publishedAt: string; id: string };
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export function encodeCursor(item: NewsItem): string {
   return Buffer.from(`${item.publishedAt}|${item.id}`, "utf8").toString("base64url");
 }
@@ -56,7 +58,10 @@ export function decodeCursor(raw: string): Cursor | null {
     if (sep < 0) return null;
     const publishedAt = decoded.slice(0, sep);
     const id = decoded.slice(sep + 1);
-    if (!publishedAt || !id) return null;
+    // The cursor is client-supplied and its parts are interpolated into the PostgREST
+    // .or() filter below, so validate strictly: id must be a UUID and publishedAt a real
+    // timestamp. A bad cursor returns null → callers fall back to the first page.
+    if (!UUID_RE.test(id) || Number.isNaN(Date.parse(publishedAt))) return null;
     return { publishedAt, id };
   } catch {
     return null;
