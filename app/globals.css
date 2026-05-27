@@ -50,45 +50,49 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --background: 222 47% 11%;
-      --foreground: 210 40% 96%;
+      /* Warm charcoal dark mode per DESIGN.md "Color -> Dark Mode (Secondary)".
+         Stone palette: bg #1C1917 (stone-900), surface #292524 (stone-800),
+         text #F5F5F4 (stone-100), muted #A8A29E (stone-400), border #44403C
+         (stone-700), accent #D4FF33. Saturation reduced ~15pts vs light mode. */
+      --background: 24 10% 10%;
+      --foreground: 60 5% 96%;
 
-      --card: 217 33% 17%;
-      --card-foreground: 210 40% 96%;
+      --card: 12 6% 15%;
+      --card-foreground: 60 5% 96%;
 
-      --popover: 217 33% 17%;
-      --popover-foreground: 210 40% 96%;
+      --popover: 12 6% 15%;
+      --popover-foreground: 60 5% 96%;
 
-      --primary: 72 100% 50%;
-      --primary-foreground: 222 47% 11%;
+      --primary: 73 100% 60%;
+      --primary-foreground: 24 10% 10%;
 
-      --secondary: 217 33% 17%;
-      --secondary-foreground: 215 16% 62%;
+      --secondary: 12 6% 15%;
+      --secondary-foreground: 24 5% 64%;
 
-      --muted: 215 16% 47%;
-      --muted-foreground: 215 16% 62%;
+      --muted: 25 5% 45%;
+      --muted-foreground: 24 5% 64%;
 
-      --accent: 72 100% 50%;
-      --accent-foreground: 222 47% 11%;
+      --accent: 73 100% 60%;
+      --accent-foreground: 24 10% 10%;
 
       --destructive: 0 84% 60%;
-      --destructive-foreground: 210 40% 96%;
+      --destructive-foreground: 60 5% 96%;
 
-      --border: 217 19% 27%;
-      --input: 217 19% 27%;
-      --ring: 72 100% 50%;
+      --border: 30 6% 25%;
+      --input: 30 6% 25%;
+      --ring: 73 100% 60%;
 
-      --sidebar-background: 222 47% 12%;
-      --sidebar-foreground: 210 40% 96%;
-      --sidebar-primary: 72 100% 50%;
-      --sidebar-primary-foreground: 222 47% 11%;
-      --sidebar-accent: 217 33% 17%;
-      --sidebar-accent-foreground: 215 16% 62%;
-      --sidebar-border: 217 19% 27%;
-      --sidebar-ring: 72 100% 50%;
+      --sidebar-background: 24 10% 11%;
+      --sidebar-foreground: 60 5% 96%;
+      --sidebar-primary: 73 100% 60%;
+      --sidebar-primary-foreground: 24 10% 10%;
+      --sidebar-accent: 12 6% 15%;
+      --sidebar-accent-foreground: 24 5% 64%;
+      --sidebar-border: 30 6% 25%;
+      --sidebar-ring: 73 100% 60%;
 
-      --shadow-card: 0 4px 24px hsl(222 47% 5% / 0.5);
-      --shadow-elevated: 0 8px 40px hsl(222 47% 5% / 0.6);
+      --shadow-card: 0 4px 24px hsl(24 10% 4% / 0.5);
+      --shadow-elevated: 0 8px 40px hsl(24 10% 4% / 0.6);
     }
   }
 }
