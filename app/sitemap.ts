@@ -5,11 +5,13 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { blogPosts } from "@/lib/blog";
+import { NEWS_CATEGORY_SLUGS } from "@/lib/news";
 
 /**
  * Builds the site's URL list for /sitemap.xml.
  * Priority/changeFrequency reflect business value: home ranks highest; legal
- * pages lowest. Blog URLs appear only once an article is published.
+ * pages lowest. Blog URLs appear only once an article is published. The Audit
+ * Pulse news index + its category filters update daily.
  * @returns Array of sitemap entries consumed by Next's metadata route.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -17,6 +19,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: `${SITE_URL}/`, lastModified, changeFrequency: "monthly", priority: 1 },
+    // Audit Pulse news index + per-category filter URLs (fresh daily).
+    { url: `${SITE_URL}/news`, lastModified, changeFrequency: "daily", priority: 0.8 },
+    ...NEWS_CATEGORY_SLUGS.map((slug) => ({
+      url: `${SITE_URL}/news?category=${slug}`,
+      lastModified,
+      changeFrequency: "daily" as const,
+      priority: 0.6,
+    })),
     // Blog index + articles — listed only once at least one article exists, so
     // we don't advertise an empty, noindexed blog.
     ...(blogPosts.length > 0

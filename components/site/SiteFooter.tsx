@@ -15,6 +15,9 @@ export default function SiteFooter({ onOpenDemo }: { onOpenDemo: () => void }) {
           &copy; 2026 Fi371. All rights reserved.
         </span>
         <div className="flex flex-wrap gap-6 sm:gap-8">
+          <Link href="/news" className={linkClass}>
+            News
+          </Link>
           <Link href="/blog" className={linkClass}>
             Blog
           </Link>
