@@ -57,7 +57,7 @@ export default function NewsCard({
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-mono text-[11px] text-foreground border-b border-border hover:border-foreground transition-colors"
+        className="font-mono text-[11px] text-foreground border-b border-border hover:border-foreground transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-card"
       >
         {verb} →
       </a>
@@ -82,7 +82,7 @@ export default function NewsCard({
         <div className="flex flex-col p-6">
           {badges}
           <h3 className="font-display text-[26px] leading-[1.1] mb-2">
-            <a href={item.url} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-4">
+            <a href={item.url} target="_blank" rel="noopener noreferrer" className="rounded-sm outline-none hover:underline underline-offset-4 focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-card">
               {item.title}
             </a>
           </h3>
