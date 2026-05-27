@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import HomeContent from "./HomeContent";
 import JsonLd from "@/components/seo/JsonLd";
+import PrivacyBubble from "@/components/site/PrivacyBubble";
 import { homeFaqs } from "./home-faqs";
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function HomePage() {
     <>
       <JsonLd data={jsonLd} />
       <HomeContent />
+      <PrivacyBubble />
     </>
   );
 }

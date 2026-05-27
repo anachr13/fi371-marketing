@@ -5,6 +5,7 @@
 
 import type { Metadata } from "next";
 import BlogIndex from "@/components/blog/BlogIndex";
+import PrivacyBubble from "@/components/site/PrivacyBubble";
 import { blogPosts } from "@/lib/blog";
 
 export function generateMetadata(): Metadata {
@@ -20,5 +21,10 @@ export function generateMetadata(): Metadata {
 }
 
 export default function BlogPage() {
-  return <BlogIndex posts={blogPosts} />;
+  return (
+    <>
+      <BlogIndex posts={blogPosts} />
+      <PrivacyBubble />
+    </>
+  );
 }
