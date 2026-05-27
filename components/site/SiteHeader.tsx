@@ -45,13 +45,7 @@ export default function SiteHeader({ onOpenDemo }: { onOpenDemo: () => void }) {
             </Link>
           )}
         </div>
-        <nav className="flex items-center gap-6">
-          <Link
-            href="/news"
-            className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            News
-          </Link>
+        <nav className="flex items-center">
           <button
             onClick={onOpenDemo}
             className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity"
