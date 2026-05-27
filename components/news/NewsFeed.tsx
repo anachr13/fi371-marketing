@@ -105,7 +105,7 @@ export default function NewsFeed({
       {error && (
         <button
           onClick={loadMore}
-          className="block mx-auto font-mono text-[13px] px-5 py-2.5 rounded-full border border-foreground text-foreground outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="mx-auto flex w-fit items-center justify-center min-h-[44px] font-mono text-[13px] px-6 rounded-full border border-foreground text-foreground outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           Couldn’t load more — tap to retry
         </button>
