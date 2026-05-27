@@ -23,15 +23,6 @@ const MEDIA_LABEL: Record<NewsItem["mediaType"], string> = {
   other: "Link",
 };
 
-function Placeholder({ item }: { item: NewsItem }) {
-  const glyph = item.mediaType === "video" ? "▶" : item.mediaType === "podcast" ? "♪" : null;
-  return (
-    <div className="flex h-full w-full items-center justify-center bg-muted/10 text-muted-foreground font-mono text-[13px]">
-      {glyph ? <span className="text-[18px]">{glyph}</span> : item.sourceName}
-    </div>
-  );
-}
-
 export default function NewsCard({
   item,
   featured = false,
@@ -76,8 +67,8 @@ export default function NewsCard({
   if (featured) {
     return (
       <article className="flex flex-col sm:flex-row overflow-hidden rounded-xl border border-border bg-card">
-        <div className="relative h-44 sm:h-auto sm:w-[300px] flex-none border-b sm:border-b-0 sm:border-r border-border">
-          {showImage ? (
+        {showImage && (
+          <div className="relative h-44 sm:h-auto sm:w-[300px] flex-none border-b sm:border-b-0 sm:border-r border-border">
             <Image
               src={item.imageUrl as string}
               alt=""
@@ -86,10 +77,8 @@ export default function NewsCard({
               className="object-cover"
               onError={() => setImgError(true)}
             />
-          ) : (
-            <Placeholder item={item} />
-          )}
-        </div>
+          </div>
+        )}
         <div className="flex flex-col p-6">
           {badges}
           <h3 className="font-display text-[26px] leading-[1.1] mb-2">
@@ -106,8 +95,8 @@ export default function NewsCard({
 
   return (
     <article className="flex flex-col overflow-hidden rounded-lg border border-border bg-card">
-      <div className="relative h-[104px] border-b border-border">
-        {showImage ? (
+      {showImage && (
+        <div className="relative h-[104px] border-b border-border">
           <Image
             src={item.imageUrl as string}
             alt=""
@@ -116,10 +105,8 @@ export default function NewsCard({
             className="object-cover"
             onError={() => setImgError(true)}
           />
-        ) : (
-          <Placeholder item={item} />
-        )}
-      </div>
+        </div>
+      )}
       <div className="flex flex-1 flex-col p-3.5">
         {badges}
         <h3 className="font-semibold text-[15.5px] leading-snug mb-1.5">
