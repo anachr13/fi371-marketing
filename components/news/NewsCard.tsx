@@ -37,7 +37,7 @@ export default function NewsCard({
   const badges = (
     <div className="mb-2 flex flex-wrap items-center gap-1.5">
       <span
-        className={`font-mono text-[10px] uppercase tracking-[0.05em] px-2 py-0.5 rounded border ${
+        className={`font-mono text-[11px] uppercase tracking-[0.05em] px-2 py-0.5 rounded border ${
           item.isAiRelated
             ? "bg-primary text-primary-foreground border-primary"
             : "bg-background text-muted-foreground border-border"
