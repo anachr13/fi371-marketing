@@ -71,7 +71,7 @@ export default function NewsCard({
           <div className="relative h-44 sm:h-auto sm:w-[300px] flex-none border-b sm:border-b-0 sm:border-r border-border">
             <Image
               src={item.imageUrl as string}
-              alt=""
+              alt={item.title}
               fill
               sizes="300px"
               className="object-cover"
@@ -99,7 +99,7 @@ export default function NewsCard({
         <div className="relative h-[104px] border-b border-border">
           <Image
             src={item.imageUrl as string}
-            alt=""
+            alt={item.title}
             fill
             sizes="(max-width: 640px) 100vw, 33vw"
             className="object-cover"
