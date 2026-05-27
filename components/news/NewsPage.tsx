@@ -47,6 +47,7 @@ export default function NewsPage({
 
           <div className="mt-8">
             <NewsFeed
+              key={category ?? "all"}
               initialItems={initialItems}
               initialCursor={initialCursor}
               category={category}
