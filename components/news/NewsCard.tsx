@@ -66,7 +66,7 @@ export default function NewsCard({
 
   if (featured) {
     return (
-      <article className="flex flex-col sm:flex-row overflow-hidden rounded-xl border border-border bg-card">
+      <article className="flex flex-col sm:flex-row overflow-hidden rounded-2xl border border-border bg-card">
         {showImage && (
           <div className="relative h-44 sm:h-auto sm:w-[300px] flex-none border-b sm:border-b-0 sm:border-r border-border">
             <Image
