@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import SiteFooter from "@/components/site/SiteFooter";
 import { useDemoModal } from "@/components/site/DemoModalProvider";
 import { homeFaqs } from "./home-faqs";
 
@@ -276,7 +275,6 @@ export default function HomeContent() {
         </section>
       </main>
 
-      <SiteFooter onOpenDemo={openDemo} />
     </div>
   );
 }

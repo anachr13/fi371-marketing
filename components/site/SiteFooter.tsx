@@ -1,12 +1,13 @@
 "use client";
-// Shared site footer for marketing pages. Takes an onOpenDemo callback so the
-// parent owns the demo modal state (Contact = Book Demo modal, per project
-// convention). In Task 12 this prop is dropped in favour of useDemoModal().
-// Created 2026-05-23. Reordered 2026-05-31.
+// Shared marketing footer. Rendered by app/(site)/layout.tsx for every page in
+// the (site) route group. Contact opens the Book Demo modal via the
+// DemoModalProvider context — no prop drilling. Updated 2026-05-31.
 
 import Link from "next/link";
+import { useDemoModal } from "./DemoModalProvider";
 
-export default function SiteFooter({ onOpenDemo }: { onOpenDemo: () => void }) {
+export default function SiteFooter() {
+  const { open: openDemo } = useDemoModal();
   const linkClass =
     "text-base text-muted-foreground hover:text-foreground transition-colors";
   const year = new Date().getFullYear();
@@ -32,7 +33,7 @@ export default function SiteFooter({ onOpenDemo }: { onOpenDemo: () => void }) {
           <Link href="/terms" className={linkClass}>
             Terms
           </Link>
-          <button onClick={onOpenDemo} className={`${linkClass} cursor-pointer text-left`}>
+          <button onClick={openDemo} className={`${linkClass} cursor-pointer text-left`}>
             Contact
           </button>
         </div>

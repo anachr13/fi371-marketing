@@ -4,7 +4,6 @@
 // every Book Demo / Contact button opens the same shared modal via useDemoModal.
 
 import Link from "next/link";
-import SiteFooter from "@/components/site/SiteFooter";
 import { useDemoModal } from "@/components/site/DemoModalProvider";
 
 export default function AboutContent() {
@@ -121,7 +120,6 @@ export default function AboutContent() {
         </article>
       </main>
 
-      <SiteFooter onOpenDemo={openDemo} />
     </div>
   );
 }

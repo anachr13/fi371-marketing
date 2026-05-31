@@ -5,7 +5,6 @@
 
 import Link from "next/link";
 import SiteHeader from "@/components/site/SiteHeader";
-import SiteFooter from "@/components/site/SiteFooter";
 import { useDemoModal } from "@/components/site/DemoModalProvider";
 import type { BlogPost } from "@/lib/blog";
 
@@ -70,7 +69,6 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
         </div>
       </main>
 
-      <SiteFooter onOpenDemo={openDemo} />
     </div>
   );
 }

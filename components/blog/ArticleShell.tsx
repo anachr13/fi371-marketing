@@ -5,7 +5,6 @@
 // Created 2026-05-23.
 
 import SiteHeader from "@/components/site/SiteHeader";
-import SiteFooter from "@/components/site/SiteFooter";
 import { useDemoModal } from "@/components/site/DemoModalProvider";
 
 type Props = {
@@ -84,7 +83,6 @@ export default function ArticleShell({
         </article>
       </main>
 
-      <SiteFooter onOpenDemo={openDemo} />
     </div>
   );
 }

@@ -5,7 +5,6 @@
 
 import { ReactNode } from "react";
 import Link from "next/link";
-import SiteFooter from "./SiteFooter";
 import { useDemoModal } from "./DemoModalProvider";
 
 interface LegalPageProps {
@@ -45,7 +44,6 @@ export default function LegalPage({ title, effectiveDate, intro, children }: Leg
         </article>
       </main>
 
-      <SiteFooter onOpenDemo={openDemo} />
     </div>
   );
 }

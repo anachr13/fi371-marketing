@@ -3,7 +3,6 @@
 // project convention), the page heading, the category filter, and the infinite-scroll feed.
 
 import SiteHeader from "@/components/site/SiteHeader";
-import SiteFooter from "@/components/site/SiteFooter";
 import { useDemoModal } from "@/components/site/DemoModalProvider";
 import CategoryFilter from "./CategoryFilter";
 import NewsFeed from "./NewsFeed";
@@ -57,7 +56,6 @@ export default function NewsPage({
         </div>
       </main>
 
-      <SiteFooter onOpenDemo={openDemo} />
     </div>
   );
 }
