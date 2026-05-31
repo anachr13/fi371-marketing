@@ -4,6 +4,7 @@
 // h1 / intro rhythm, then a grouped list of trusted sources with auto-fetched favicons.
 
 import Image from "next/image";
+import Link from "next/link";
 import SiteHeader from "@/components/site/SiteHeader";
 import { useDemoModal } from "@/components/site/DemoModalProvider";
 import { faviconUrl, type SourceGroup } from "@/lib/news-sources";
@@ -80,6 +81,15 @@ export default function SourcesPage({
                 </ul>
               </section>
             ))}
+          </div>
+
+          <div className="mt-20 flex flex-wrap gap-5">
+            <Link
+              href="/news"
+              className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors"
+            >
+              Back to news
+            </Link>
           </div>
         </div>
       </main>
