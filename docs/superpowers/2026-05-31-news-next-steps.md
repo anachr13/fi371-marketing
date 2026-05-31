@@ -25,21 +25,20 @@ The /news redesign from grid-and-featured to single-column Medium-style is done 
 
 ### Priority 1 — wire n8n to send `source_logo_url` + `author_name`
 
-The frontend, schema, and validator are all ready. The n8n research workflow just needs to start sending these two new fields. **Both are optional**, so this is a one-line addition per field to your n8n payload — old runs still work.
+**Status: closed via a smaller fix (PR [#25](https://github.com/anachr13/fi371-marketing/pull/25)).** Scope was reduced once `/news/sources` (PR [#22](https://github.com/anachr13/fi371-marketing/pull/22)) shipped the client-safe `faviconUrl(domain)` helper. Logos now resolve on the card via that helper directly from `item.url` — no n8n change, no DB backfill, no migration to verify in prod. Letter-circle remains as a final fallback if URL parsing fails. **F3 from the design review (see P4) is now moot.**
 
-Pseudocode for the n8n side:
+What's left from the original P1:
+- **`author_name`** is still null. Tavily doesn't return author info, and the LLM doesn't see it, so adding bylines would require an HTTP-fetch + meta-parse node in n8n (`article:author` / `<meta name=author>` / JSON-LD `author.name`). Open question for editorial: are bylines worth the ~30 min lift + paywall fragility? Promote to its own ticket if yes, otherwise close.
+- **Real publisher-branded logos (apple-touch-icon resolution)** were a nice-to-have over favicons. At 22px display the favicon service generally returns the same brand asset publishers ship in apple-touch-icon, so the visible delta is small. Revisit only if a designer flags weak rendering on the preview.
+
+Historical pseudocode (kept for the future bylines ticket):
 ```js
-// In the node that builds the POST body for /api/news/ingest:
+// In the n8n node that builds the POST body for /api/news/ingest, if we ever go back:
 {
   ...existingFields,
-  source_logo_url: extractedPublisherLogoUrl,  // null if not found
-  author_name: extractedAuthorName,            // null if not found
+  author_name: extractedAuthorName, // from meta[name=author] / article:author / JSON-LD author.name
 }
 ```
-
-Where to extract from the source page:
-- `source_logo_url` — best from the publisher's homepage (`<link rel="apple-touch-icon">` or the `og:image` of the homepage). A cheap fallback that always works: `https://www.google.com/s2/favicons?domain=<host>&sz=64`.
-- `author_name` — from the article page: `<meta property="article:author">`, `<meta name="author">`, or the JSON-LD `author.name` field. Many of our sources expose this cleanly.
 
 ### Priority 2 — backfill logos + authors for the existing 29 rows
 
@@ -62,7 +61,7 @@ My recommendation: (a). If the editorial team finds the all-text WSJ cards visua
 From the /design-review pass this session, four findings remain. Three were design taste calls that didn't get fixed:
 
 - **F2** (medium) — mobile click affordance. Whole card is clickable but there's no hover cue on touch devices. A subtle `→` glyph at the right edge of the body would read as "tap to open" without breaking the calm. ~10 lines of JSX in `components/news/NewsCard.tsx`.
-- **F3** (polish) — letter-circle logos all look identical (gray-on-paper circles). Acceptable as fallback, but a touch more colour or contrast would help with rhythm. Only matters until P1 (real logos) lands — then becomes moot.
+- **F3** (polish) — ~~letter-circle logos all look identical~~. **Closed by PR [#25](https://github.com/anachr13/fi371-marketing/pull/25)** — favicons via the existing `faviconUrl` helper now render on every card.
 - **F4** (polish) — empty space right of cards on wide viewports. Body caps at 640px and image well is 200px + 32px gap, so there's a chunk of empty paper to the right at 1200px page width. Intentional (Medium-style loose feed), but worth eyeballing on a wide monitor.
 
 ### Priority 5 — spec/plan freshness
