@@ -2,10 +2,9 @@
 // Client shell for /news: shared header/footer + demo modal (Contact = Book Demo, per
 // project convention), the page heading, the category filter, and the infinite-scroll feed.
 
-import { useState } from "react";
 import SiteHeader from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
-import DemoModal from "@/components/site/DemoModal";
+import { useDemoModal } from "@/components/site/DemoModalProvider";
 import CategoryFilter from "./CategoryFilter";
 import NewsFeed from "./NewsFeed";
 import { categoryLabel, type NewsItem, type NewsCategorySlug } from "@/lib/news";
@@ -23,11 +22,11 @@ export default function NewsPage({
   todayKey: string;
   yesterdayKey: string;
 }) {
-  const [demoOpen, setDemoOpen] = useState(false);
+  const { open: openDemo } = useDemoModal();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader onOpenDemo={() => setDemoOpen(true)} />
+      <SiteHeader onOpenDemo={openDemo} />
 
       <main className="pt-32 pb-[120px]">
         <div className="max-w-[1200px] mx-auto px-8">
@@ -58,8 +57,7 @@ export default function NewsPage({
         </div>
       </main>
 
-      <SiteFooter onOpenDemo={() => setDemoOpen(true)} />
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
+      <SiteFooter onOpenDemo={openDemo} />
     </div>
   );
 }
