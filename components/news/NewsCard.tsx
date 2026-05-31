@@ -62,7 +62,7 @@ function PublisherLogo({ src, name }: { src: string | null; name: string }) {
   );
 }
 
-const PLACEHOLDER_SRC = "/news/placeholder.svg";
+const PLACEHOLDER_SRC = "/news/placeholder.png";
 
 export default function NewsCard({ item }: { item: NewsItem }) {
   const [imgError, setImgError] = useState(false);
@@ -130,7 +130,6 @@ export default function NewsCard({ item }: { item: NewsItem }) {
             sizes="(max-width: 640px) 100vw, 200px"
             className="object-cover saturate-[0.8] brightness-[0.96] transition-[filter] duration-200 group-hover:saturate-100 group-hover:brightness-100"
             onError={() => setImgError(true)}
-            unoptimized={usingPlaceholder}
           />
         </div>
       </a>
