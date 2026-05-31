@@ -77,9 +77,12 @@ function PublisherLogo({ src, name }: { src: string | null; name: string }) {
   );
 }
 
+const PLACEHOLDER_SRC = "/news/placeholder.png";
+
 export default function NewsCard({ item }: { item: NewsItem }) {
   const [imgError, setImgError] = useState(false);
-  const showImage = Boolean(item.imageUrl) && !imgError;
+  const usingPlaceholder = !item.imageUrl || imgError;
+  const imageSrc = usingPlaceholder ? PLACEHOLDER_SRC : (item.imageUrl as string);
 
   return (
     <article className="border-b border-border last:border-b-0">
@@ -136,18 +139,16 @@ export default function NewsCard({ item }: { item: NewsItem }) {
           </div>
         </div>
 
-        {showImage && (
-          <div className="relative h-[180px] w-full flex-none overflow-hidden rounded border border-border sm:h-[134px] sm:w-[200px]">
-            <Image
-              src={item.imageUrl as string}
-              alt={item.title}
-              fill
-              sizes="(max-width: 640px) 100vw, 200px"
-              className="object-cover saturate-[0.8] brightness-[0.96] transition-[filter] duration-200 group-hover:saturate-100 group-hover:brightness-100"
-              onError={() => setImgError(true)}
-            />
-          </div>
-        )}
+        <div className="relative h-[180px] w-full flex-none overflow-hidden rounded border border-border sm:h-[134px] sm:w-[200px]">
+          <Image
+            src={imageSrc}
+            alt={usingPlaceholder ? "" : item.title}
+            fill
+            sizes="(max-width: 640px) 100vw, 200px"
+            className="object-cover saturate-[0.8] brightness-[0.96] transition-[filter] duration-200 group-hover:saturate-100 group-hover:brightness-100"
+            onError={() => setImgError(true)}
+          />
+        </div>
       </a>
     </article>
   );
