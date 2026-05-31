@@ -6,6 +6,7 @@
 import { useState, ReactNode } from "react";
 import Link from "next/link";
 import DemoModal from "./DemoModal";
+import SiteFooter from "./SiteFooter";
 
 interface LegalPageProps {
   title: string;
@@ -44,17 +45,7 @@ export default function LegalPage({ title, effectiveDate, intro, children }: Leg
         </article>
       </main>
 
-      <footer className="border-t border-border py-10">
-        <div className="max-w-[1500px] mx-auto px-8 flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between sm:items-center">
-          <span className="text-base text-muted-foreground">&copy; 2026 Fi371. All rights reserved.</span>
-          <div className="flex gap-8">
-            <Link href="/about" className="text-base text-muted-foreground hover:text-foreground transition-colors">About</Link>
-            <Link href="/privacy" className="text-base text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="/terms" className="text-base text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
-            <button onClick={() => setDemoOpen(true)} className="text-base text-muted-foreground hover:text-foreground transition-colors cursor-pointer text-left">Contact</button>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter onOpenDemo={() => setDemoOpen(true)} />
 
       <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
