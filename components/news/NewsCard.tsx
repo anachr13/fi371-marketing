@@ -44,7 +44,7 @@ export default function NewsCard({
             : "bg-background text-muted-foreground border-border"
         }`}
       >
-        {MEDIA_LABEL[item.mediaType]} · {item.sourceName}
+        {item.isAiRelated ? "AI · " : ""}{MEDIA_LABEL[item.mediaType]} · {item.sourceName}
       </span>
     </div>
   );
