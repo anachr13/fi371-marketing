@@ -71,7 +71,7 @@ export default function NewsFeed({
     <div>
       {groups.map((group) => (
         <section key={group.key} className="mb-12">
-          <h2 className="font-mono text-[12px] tracking-[0.08em] uppercase text-muted-foreground mb-2 flex items-center gap-3 after:content-[''] after:flex-1 after:h-px after:bg-border">
+          <h2 className="font-display text-[26px] leading-[1.15] tracking-[-0.005em] text-foreground mb-4 flex items-center gap-3 after:content-[''] after:flex-1 after:h-px after:bg-border">
             {group.label}
           </h2>
           <div>
