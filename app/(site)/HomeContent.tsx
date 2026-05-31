@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import DemoModal from "@/components/site/DemoModal";
 import SiteFooter from "@/components/site/SiteFooter";
+import { useDemoModal } from "@/components/site/DemoModalProvider";
 import { homeFaqs } from "./home-faqs";
 
 const workflowSteps = [
@@ -65,7 +65,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function HomeContent() {
-  const [demoOpen, setDemoOpen] = useState(false);
+  const { open: openDemo } = useDemoModal();
   const [compareOpen, setCompareOpen] = useState(false);
 
   return (
@@ -77,7 +77,7 @@ export default function HomeContent() {
           <nav className="hidden md:flex items-center gap-10">
             <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Try It Yourself</a>
             <a href="#features" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Features</a>
-            <button onClick={() => setDemoOpen(true)} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+            <button onClick={openDemo} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
           </nav>
         </div>
       </header>
@@ -92,7 +92,7 @@ export default function HomeContent() {
                 <h1 className="font-display text-[70px] leading-[1.08] tracking-tight mb-8">Close audit engagements in days, not weeks.</h1>
                 <p className="text-[22px] text-muted-foreground leading-relaxed mb-10 max-w-[600px]">Accelerate your audits with an end-to-end platform built on AI. From client onboarding to final opinion, faster.</p>
                 <div className="flex gap-5 mb-3">
-                  <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+                  <button onClick={openDemo} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
                   <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; Preview a Scenario</a>
                 </div>
                 <p className="text-[15px] text-muted-foreground">30-minute demo &middot; See your firm&apos;s workflow &middot; No commitment</p>
@@ -269,16 +269,14 @@ export default function HomeContent() {
             <h2 className="font-display text-[60px] leading-[1.1] mb-5">Ready to leave 2005 behind?</h2>
             <p className="text-[22px] text-muted-foreground mb-10 max-w-[650px] mx-auto">See how Fi371 works for your firm. 30-minute demo, tailored to your workflow.</p>
             <div className="flex justify-center gap-5">
-              <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+              <button onClick={openDemo} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
               <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; Evaluate the AI</a>
             </div>
           </div>
         </section>
       </main>
 
-      <SiteFooter onOpenDemo={() => setDemoOpen(true)} />
-
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
+      <SiteFooter onOpenDemo={openDemo} />
     </div>
   );
 }
