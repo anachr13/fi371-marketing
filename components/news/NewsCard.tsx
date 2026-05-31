@@ -2,13 +2,27 @@
 // One Medium-style story card. Top to bottom: publisher row (logo + name + optional
 // author) → label chips (media type + AI flag, category) → 26px Instrument Serif title
 // → summary. Optional article image sits to the right on ≥640px, stacks below on mobile.
-// Whole card is the link target. Missing publisher logo falls back to a first-letter
-// circle so the alignment stays consistent. Chartreuse (bg-primary) on the media chip is
-// reserved for AI items per DESIGN.md.
+// Whole card is the link target. Publisher logo: prefer the explicit sourceLogoUrl on
+// the row; otherwise derive a favicon from the article URL via the same helper
+// /news/sources uses; only fall through to a first-letter circle if URL parsing fails.
+// Chartreuse (bg-primary) on the media chip is reserved for AI items per DESIGN.md.
 
 import Image from "next/image";
 import { useState } from "react";
 import { categoryLabel, type NewsItem } from "@/lib/news";
+import { faviconUrl } from "@/lib/news-sources";
+
+// Derive a favicon URL from an article URL. Returns null on a malformed URL so the
+// caller can fall back to the letter-circle. We strip the leading "www." so the favicon
+// service keys on the canonical domain (matches /news/sources).
+function faviconForArticleUrl(url: string): string | null {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    return faviconUrl(host);
+  } catch {
+    return null;
+  }
+}
 
 const MEDIA_LABEL: Record<NewsItem["mediaType"], string> = {
   article: "Article",
@@ -64,7 +78,10 @@ export default function NewsCard({ item }: { item: NewsItem }) {
         <div className="min-w-0 flex-1 sm:max-w-[640px]">
           {/* Publisher row */}
           <div className="mb-2.5 flex items-center gap-2 text-[14px]">
-            <PublisherLogo src={item.sourceLogoUrl} name={item.sourceName} />
+            <PublisherLogo
+              src={item.sourceLogoUrl ?? faviconForArticleUrl(item.url)}
+              name={item.sourceName}
+            />
             <span className="text-muted-foreground">
               In <span className="font-medium text-foreground">{item.sourceName}</span>
               {item.authorName ? (
