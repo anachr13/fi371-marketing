@@ -58,7 +58,7 @@ export default function NewsCard({
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center min-h-[44px] font-mono text-[11px] text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+        className="inline-flex items-center min-h-[44px] font-mono text-[11px] text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-card"
       >
         {verb} →
       </a>
