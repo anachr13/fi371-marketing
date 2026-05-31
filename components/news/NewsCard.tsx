@@ -61,7 +61,7 @@ export default function NewsCard({ item }: { item: NewsItem }) {
         aria-label={item.title}
         className="group flex flex-col gap-4 py-6 sm:flex-row sm:gap-8 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 sm:max-w-[640px]">
           {/* Publisher row */}
           <div className="mb-2.5 flex items-center gap-2 text-[14px]">
             <PublisherLogo src={item.sourceLogoUrl} name={item.sourceName} />
@@ -109,7 +109,7 @@ export default function NewsCard({ item }: { item: NewsItem }) {
               alt={item.title}
               fill
               sizes="(max-width: 640px) 100vw, 200px"
-              className="object-cover"
+              className="object-cover saturate-[0.8] brightness-[0.96] transition-[filter] duration-200 group-hover:saturate-100 group-hover:brightness-100"
               onError={() => setImgError(true)}
             />
           </div>
