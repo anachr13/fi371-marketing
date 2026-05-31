@@ -75,8 +75,18 @@ export default function NewsCard({ item }: { item: NewsItem }) {
             </span>
           </div>
 
+          {/* Title */}
+          <h3 className="font-display text-[26px] leading-[1.15] tracking-[-0.005em] mb-2 text-foreground group-hover:underline underline-offset-4">
+            {item.title}
+          </h3>
+
+          {/* Summary */}
+          <p className="text-[16px] leading-relaxed text-muted-foreground mb-3">
+            {item.summary}
+          </p>
+
           {/* Label row */}
-          <div className="mb-3 flex flex-wrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5">
             <span
               className={`font-mono text-[11px] uppercase tracking-[0.05em] px-2 py-0.5 rounded border ${
                 item.isAiRelated
@@ -90,16 +100,6 @@ export default function NewsCard({ item }: { item: NewsItem }) {
               {categoryLabel(item.category)}
             </span>
           </div>
-
-          {/* Title */}
-          <h3 className="font-display text-[26px] leading-[1.15] tracking-[-0.005em] mb-2 text-foreground group-hover:underline underline-offset-4">
-            {item.title}
-          </h3>
-
-          {/* Summary */}
-          <p className="text-[16px] leading-relaxed text-muted-foreground">
-            {item.summary}
-          </p>
         </div>
 
         {showImage && (
