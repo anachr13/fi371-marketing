@@ -2,6 +2,7 @@
 // Client shell for /news: shared header/footer + demo modal (Contact = Book Demo, per
 // project convention), the page heading, the category filter, and the infinite-scroll feed.
 
+import Link from "next/link";
 import SiteHeader from "@/components/site/SiteHeader";
 import { useDemoModal } from "@/components/site/DemoModalProvider";
 import CategoryFilter from "./CategoryFilter";
@@ -30,7 +31,13 @@ export default function NewsPage({
       <main className="pt-32 pb-[120px]">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="font-mono text-[13px] tracking-[0.1em] uppercase text-muted-foreground mb-4">
-            Fi371 · Updated daily · curated from trusted sources
+            Fi371 · Updated daily ·{" "}
+            <Link
+              href="/news/sources"
+              className="underline decoration-muted-foreground/40 underline-offset-[3px] hover:decoration-foreground hover:text-foreground transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              curated from trusted sources
+            </Link>
           </div>
           <h1 className="font-display text-[clamp(44px,7vw,72px)] leading-[1.0] tracking-tight mb-4">
             Audit Pulse
