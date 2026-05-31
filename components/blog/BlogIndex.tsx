@@ -3,11 +3,9 @@
 // article cards linking to each post. Styling mirrors the editorial design
 // system (DESIGN.md). Created 2026-05-23.
 
-import { useState } from "react";
 import Link from "next/link";
 import SiteHeader from "@/components/site/SiteHeader";
-import SiteFooter from "@/components/site/SiteFooter";
-import DemoModal from "@/components/site/DemoModal";
+import { useDemoModal } from "@/components/site/DemoModalProvider";
 import type { BlogPost } from "@/lib/blog";
 
 function formatDate(iso: string) {
@@ -22,11 +20,11 @@ function formatDate(iso: string) {
 }
 
 export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
-  const [demoOpen, setDemoOpen] = useState(false);
+  const { open: openDemo } = useDemoModal();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader onOpenDemo={() => setDemoOpen(true)} />
+      <SiteHeader onOpenDemo={openDemo} />
 
       <main className="pt-40 pb-[120px]">
         <div className="max-w-[860px] mx-auto px-8">
@@ -71,8 +69,6 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
         </div>
       </main>
 
-      <SiteFooter onOpenDemo={() => setDemoOpen(true)} />
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );
 }

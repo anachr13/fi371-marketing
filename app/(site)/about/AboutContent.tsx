@@ -1,14 +1,13 @@
 "use client";
 
-// Client-rendered About page body — owns the demo modal state so the Contact
-// link in the footer (and Book Demo button in the header) can open it.
+// Client-rendered About page body. Demo modal lives in DemoModalProvider —
+// every Book Demo / Contact button opens the same shared modal via useDemoModal.
 
-import { useState } from "react";
 import Link from "next/link";
-import DemoModal from "@/components/site/DemoModal";
+import { useDemoModal } from "@/components/site/DemoModalProvider";
 
 export default function AboutContent() {
-  const [demoOpen, setDemoOpen] = useState(false);
+  const { open: openDemo } = useDemoModal();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -17,7 +16,7 @@ export default function AboutContent() {
           <Link href="/" className="font-semibold text-2xl tracking-tight">Fi371</Link>
           <nav className="hidden md:flex items-center gap-10">
             <Link href="/" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-            <button onClick={() => setDemoOpen(true)} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+            <button onClick={openDemo} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
           </nav>
         </div>
       </header>
@@ -111,7 +110,7 @@ export default function AboutContent() {
           </div>
 
           <div className="mt-20 flex flex-wrap gap-5">
-            <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">
+            <button onClick={openDemo} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">
               Book Demo
             </button>
             <Link href="/" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">
@@ -121,19 +120,6 @@ export default function AboutContent() {
         </article>
       </main>
 
-      <footer className="border-t border-border py-10">
-        <div className="max-w-[1500px] mx-auto px-8 flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between sm:items-center">
-          <span className="text-base text-muted-foreground">&copy; 2026 Fi371. All rights reserved.</span>
-          <div className="flex gap-8">
-            <Link href="/about" className="text-base text-muted-foreground hover:text-foreground transition-colors">About</Link>
-            <Link href="/privacy" className="text-base text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="/terms" className="text-base text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
-            <button onClick={() => setDemoOpen(true)} className="text-base text-muted-foreground hover:text-foreground transition-colors cursor-pointer text-left">Contact</button>
-          </div>
-        </div>
-      </footer>
-
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );
 }

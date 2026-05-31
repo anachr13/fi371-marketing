@@ -4,10 +4,8 @@
 // (children), and a closing demo CTA. Styling mirrors the About page (DESIGN.md).
 // Created 2026-05-23.
 
-import { useState } from "react";
 import SiteHeader from "@/components/site/SiteHeader";
-import SiteFooter from "@/components/site/SiteFooter";
-import DemoModal from "@/components/site/DemoModal";
+import { useDemoModal } from "@/components/site/DemoModalProvider";
 
 type Props = {
   category: string;
@@ -39,8 +37,7 @@ export default function ArticleShell({
   children,
   belowCta,
 }: Props) {
-  const [demoOpen, setDemoOpen] = useState(false);
-  const openDemo = () => setDemoOpen(true);
+  const { open: openDemo } = useDemoModal();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -86,8 +83,6 @@ export default function ArticleShell({
         </article>
       </main>
 
-      <SiteFooter onOpenDemo={openDemo} />
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import DemoModal from "@/components/site/DemoModal";
+import { useDemoModal } from "@/components/site/DemoModalProvider";
 import { homeFaqs } from "./home-faqs";
 
 const workflowSteps = [
@@ -65,7 +64,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function HomeContent() {
-  const [demoOpen, setDemoOpen] = useState(false);
+  const { open: openDemo } = useDemoModal();
   const [compareOpen, setCompareOpen] = useState(false);
 
   return (
@@ -77,7 +76,7 @@ export default function HomeContent() {
           <nav className="hidden md:flex items-center gap-10">
             <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Try It Yourself</a>
             <a href="#features" className="text-[17px] font-medium text-muted-foreground hover:text-foreground transition-colors">Features</a>
-            <button onClick={() => setDemoOpen(true)} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+            <button onClick={openDemo} className="px-5 py-2.5 bg-primary text-primary-foreground text-base font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
           </nav>
         </div>
       </header>
@@ -92,7 +91,7 @@ export default function HomeContent() {
                 <h1 className="font-display text-[70px] leading-[1.08] tracking-tight mb-8">Close audit engagements in days, not weeks.</h1>
                 <p className="text-[22px] text-muted-foreground leading-relaxed mb-10 max-w-[600px]">Accelerate your audits with an end-to-end platform built on AI. From client onboarding to final opinion, faster.</p>
                 <div className="flex gap-5 mb-3">
-                  <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+                  <button onClick={openDemo} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
                   <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; Preview a Scenario</a>
                 </div>
                 <p className="text-[15px] text-muted-foreground">30-minute demo &middot; See your firm&apos;s workflow &middot; No commitment</p>
@@ -269,27 +268,13 @@ export default function HomeContent() {
             <h2 className="font-display text-[60px] leading-[1.1] mb-5">Ready to leave 2005 behind?</h2>
             <p className="text-[22px] text-muted-foreground mb-10 max-w-[650px] mx-auto">See how Fi371 works for your firm. 30-minute demo, tailored to your workflow.</p>
             <div className="flex justify-center gap-5">
-              <button onClick={() => setDemoOpen(true)} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
+              <button onClick={openDemo} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-opacity">Book Demo</button>
               <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border-2 border-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-colors">&#9655; Evaluate the AI</a>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-8 md:py-10">
-        <div className="max-w-[1500px] mx-auto px-8 flex flex-col md:flex-row md:justify-between md:items-center gap-6 md:gap-0">
-          <span className="text-sm md:text-base text-muted-foreground">&copy; 2026 Fi371. All rights reserved.</span>
-          <div className="flex flex-wrap gap-4 md:gap-8">
-            <Link href="/about" className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors">About</Link>
-            <Link href="/privacy" className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="/terms" className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
-            <button onClick={() => setDemoOpen(true)} className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors cursor-pointer">Contact</button>
-          </div>
-        </div>
-      </footer>
-
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );
 }
