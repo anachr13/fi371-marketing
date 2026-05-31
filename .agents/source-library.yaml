@@ -1,0 +1,207 @@
+# Audit Pulse — research source library
+#
+# This file is the single source of truth for which outlets the n8n
+# "Audit Pulse — News Engine" workflow searches across when finding the
+# day's audit / accounting / adjacent stories. It is read by humans and
+# injected into the grounded-research AI prompt; it is NOT polled as a
+# set of RSS feeds (many entries are standards-body sites that rarely
+# change — coverage comes from grounded web search + per-URL verification).
+#
+# Scope: this is the FULL research scope, which intentionally includes
+# competitor / audit-tech-vendor sites (Caseware, DataSnipper, MindBridge,
+# etc.) so the engine can spot product news the profession cares about.
+# The public-facing /news/sources page uses a curated subset in
+# lib/news-sources.ts that excludes competitors.
+#
+# To add a source: append under the right group with name + url; add an
+# optional `region` or `notes` field if useful. Source ≠ fixed category;
+# the AI tags each STORY into one of the 6 categories per-story.
+#
+# Total: 62 entries (44 from the original library + 13 new + 5 sub-page
+# splits — AccountingWEB UK vs US, Accountancy Europe top-level vs Audit
+# vs Sustainability updates, IFAC AI hub, ISACA Shadow AI — each is a
+# real distinct URL worth searching).
+# Spec: ~/.claude/plans/2026-05-27-audit-pulse-n8n-engine-design.md
+
+groups:
+  - slug: standards-regulators
+    label: Standards bodies & regulators
+    sources:
+      - name: IAASB
+        url: https://www.iaasb.org/
+      - name: IAASB ISSA 5000 (sustainability assurance)
+        url: https://www.iaasb.org/publications/international-standard-sustainability-assurance-issa-5000-general-requirements-sustainability-assurance
+      - name: IFAC
+        url: https://www.ifac.org/
+      - name: IFAC AI hub
+        url: https://www.ifac.org/knowledge-gateway/discussion/discussion-board-ai
+      - name: FRC (UK)
+        url: https://www.frc.org.uk/
+        region: UK
+      - name: PCAOB
+        url: https://pcaobus.org/
+        region: US
+      - name: AICPA & CIMA
+        url: https://www.aicpa-cima.com/
+        region: US/UK
+      - name: Center for Audit Quality (CAQ)
+        url: https://www.thecaq.org/
+        region: US
+      - name: Accountancy Europe
+        url: https://accountancyeurope.eu/
+        region: EU
+      - name: Accountancy Europe — Audit Update
+        url: https://accountancyeurope.eu/category/news/audit/
+        region: EU
+      - name: Accountancy Europe — Sustainability Update
+        url: https://accountancyeurope.eu/category/news/sustainability/
+        region: EU
+      - name: ICAEW Insights
+        url: https://www.icaew.com/insights
+        region: UK
+      - name: The IIA (Institute of Internal Auditors)
+        url: https://www.theiia.org/
+      - name: CPA.com
+        url: https://www.cpa.com/
+        region: US
+
+  - slug: regional-institutes
+    label: Regional accounting institutes
+    sources:
+      - name: Malaysian Institute of Accountants (MIA)
+        url: https://www.at-mia.my/
+        region: Malaysia
+      - name: CPA Australia
+        url: https://www.cpaaustralia.com.au/
+        region: Australia
+      - name: Chartered Accountants ANZ
+        url: https://www.charteredaccountantsanz.com/
+        region: Australia/NZ
+      - name: ICAI (Institute of Chartered Accountants of India)
+        url: https://www.icai.org/
+        region: India
+      - name: HKICPA
+        url: https://www.hkicpa.org.hk/
+        region: Hong Kong
+      - name: SAICA
+        url: https://www.saica.org.za/
+        region: South Africa
+
+  - slug: sustainability
+    label: Sustainability reporting & assurance
+    sources:
+      - name: IFRS Foundation
+        url: https://www.ifrs.org/
+      - name: ISSB
+        url: https://www.ifrs.org/groups/international-sustainability-standards-board/
+      - name: EFRAG
+        url: https://www.efrag.org/
+        region: EU
+      - name: GRI
+        url: https://www.globalreporting.org/
+
+  - slug: security-governance-ai
+    label: Security, governance & AI risk
+    sources:
+      - name: ISACA
+        url: https://www.isaca.org/
+      - name: ISACA — Shadow AI / AI risk
+        url: https://www.isaca.org/resources/news-and-trends
+      - name: NIST AI Risk Management Framework
+        url: https://www.nist.gov/itl/ai-risk-management-framework
+        region: US
+      - name: ISO/IEC 42001 (AI management systems)
+        url: https://www.iso.org/standard/81230.html
+      - name: ENISA
+        url: https://www.enisa.europa.eu/
+        region: EU
+      - name: European Commission — EU AI Act
+        url: https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai
+        region: EU
+      - name: ICO (UK Information Commissioner)
+        url: https://ico.org.uk/
+        region: UK
+      - name: CNIL — AI
+        url: https://www.cnil.fr/en/artificial-intelligence-ai
+        region: France/EU
+
+  - slug: news-media
+    label: Finance & accounting news media
+    sources:
+      - name: Financial Times
+        url: https://www.ft.com/
+      - name: Bloomberg
+        url: https://www.bloomberg.com/
+      - name: Reuters
+        url: https://www.reuters.com/business/
+      - name: WSJ CFO Journal
+        url: https://www.wsj.com/news/cfo-journal
+      - name: Accounting Today
+        url: https://www.accountingtoday.com/
+        region: US
+      - name: Accountancy Age
+        url: https://www.accountancyage.com/
+        region: UK
+      - name: Accountancy Daily
+        url: https://www.accountancydaily.co/
+        region: UK
+      - name: AccountingWEB (UK)
+        url: https://www.accountingweb.co.uk/
+        region: UK
+      - name: AccountingWEB (US)
+        url: https://www.accountingweb.com/
+        region: US
+      - name: Journal of Accountancy
+        url: https://www.journalofaccountancy.com/
+        region: US
+      - name: CPA Practice Advisor
+        url: https://www.cpapracticeadvisor.com/
+        region: US
+      - name: International Accounting Bulletin
+        url: https://internationalaccountingbulletin.com/
+      - name: Going Concern
+        url: https://www.goingconcern.com/
+        region: US
+        notes: Informal/snarky voice — verified URLs only, summaries rewritten in formal Fi371 tone.
+      - name: CFO Dive
+        url: https://www.cfodive.com/
+      - name: CFO.com
+        url: https://www.cfo.com/
+      - name: Wolters Kluwer — Audit & Assurance
+        url: https://www.wolterskluwer.com/en/expert-insights/topics/audit-assurance
+      - name: Thomson Reuters Institute
+        url: https://www.thomsonreuters.com/en-us/posts/
+
+  - slug: advisory-research
+    label: Big 4 & advisory research
+    sources:
+      - name: Deloitte Insights
+        url: https://www.deloitte.com/global/en/insights.html
+      - name: PwC Insights
+        url: https://www.pwc.com/gx/en/issues.html
+      - name: EY Insights
+        url: https://www.ey.com/en_gl/insights
+      - name: KPMG Insights
+        url: https://kpmg.com/xx/en/insights.html
+      - name: BDO Global Insights
+        url: https://www.bdo.global/en-gb/insights
+      - name: Grant Thornton Insights
+        url: https://www.grantthornton.global/en/insights/
+
+  - slug: audit-tech-vendors
+    label: Audit technology vendors (product news + thought leadership)
+    sources:
+      - name: Caseware
+        url: https://www.caseware.com/
+      - name: DataSnipper
+        url: https://www.datasnipper.com/
+      - name: MindBridge
+        url: https://www.mindbridge.ai/
+      - name: Inflo
+        url: https://www.inflo.net/
+      - name: Fieldguide
+        url: https://www.fieldguide.io/
+      - name: Validis
+        url: https://www.validis.com/
+      - name: AuditBoard
+        url: https://www.auditboard.com/
