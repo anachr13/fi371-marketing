@@ -10,7 +10,7 @@ import {
 } from "@/lib/news";
 
 const SELECT_COLUMNS =
-  "id, published_at, title, summary, url, source_name, media_type, category, image_url, is_ai_related, importance";
+  "id, published_at, title, summary, url, source_name, source_logo_url, author_name, media_type, category, image_url, is_ai_related, importance";
 
 type NewsRow = {
   id: string;
@@ -19,6 +19,8 @@ type NewsRow = {
   summary: string;
   url: string;
   source_name: string;
+  source_logo_url: string | null;
+  author_name: string | null;
   media_type: NewsItem["mediaType"];
   category: NewsCategorySlug;
   image_url: string | null;
@@ -34,6 +36,8 @@ function rowToItem(row: NewsRow): NewsItem {
     summary: row.summary,
     url: row.url,
     sourceName: row.source_name,
+    sourceLogoUrl: row.source_logo_url,
+    authorName: row.author_name,
     mediaType: row.media_type,
     category: row.category,
     imageUrl: row.image_url,
