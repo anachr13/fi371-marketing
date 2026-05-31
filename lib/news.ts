@@ -41,6 +41,8 @@ export type NewsItem = {
   summary: string;
   url: string;
   sourceName: string;
+  sourceLogoUrl: string | null;
+  authorName: string | null;
   mediaType: MediaType;
   category: NewsCategorySlug;
   imageUrl: string | null;

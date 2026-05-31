@@ -9,6 +9,8 @@ const itemSchema = z.object({
   summary: z.string().trim().min(1).max(600),
   url: z.string().trim().url().max(2000),
   source_name: z.string().trim().min(1).max(120),
+  source_logo_url: z.string().trim().url().max(2000).optional().nullable(),
+  author_name: z.string().trim().min(1).max(200).optional().nullable(),
   media_type: z.enum(MEDIA_TYPES),
   category: z.enum(NEWS_CATEGORY_SLUGS),
   // Accept any parseable date (date-only or full ISO) and normalise to ISO UTC.
@@ -64,6 +66,8 @@ export async function POST(request: NextRequest) {
       summary: it.summary,
       url: it.url,
       source_name: it.source_name,
+      source_logo_url: it.source_logo_url ?? null,
+      author_name: it.author_name ?? null,
       media_type: it.media_type,
       category: it.category,
       published_at: it.published_at,
