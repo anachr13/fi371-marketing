@@ -97,7 +97,7 @@ export default function NewsFeed({
         )}
         {!cursor && (
           <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-muted-foreground text-center py-10">
-            You’re all caught up
+            You’re all caught up 🎉
           </p>
         )}
       </div>
