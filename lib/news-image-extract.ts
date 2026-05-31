@@ -27,10 +27,14 @@ const META_SELECTORS: { selector: string; attr: "content" }[] = [
 ];
 
 export async function extractImageUrl(articleUrl: string): Promise<string | null> {
+  // AbortController + timer scoped OUTSIDE the try so finally can always clear it.
+  // The timer is cleared in finally, NOT immediately after headers arrive — otherwise
+  // a stalled body stream would hang res.text() past the 10s budget and block whole
+  // backfill chunks (Codex flagged this on PR #29).
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   let html: string;
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
     const res = await fetch(articleUrl, {
       headers: {
         "User-Agent": USER_AGENT,
@@ -39,11 +43,12 @@ export async function extractImageUrl(articleUrl: string): Promise<string | null
       signal: controller.signal,
       redirect: "follow",
     });
-    clearTimeout(timer);
     if (!res.ok) return null;
     html = await res.text();
   } catch {
     return null;
+  } finally {
+    clearTimeout(timer);
   }
 
   const root = parse(html);
@@ -55,13 +60,13 @@ export async function extractImageUrl(articleUrl: string): Promise<string | null
     if (candidate && isUsable(candidate)) return candidate;
   }
 
-  // 6: JSON-LD walk
+  // 6: JSON-LD walk (extractImageString already applies isUsable per candidate)
   const jsonLdScripts = root.querySelectorAll('script[type="application/ld+json"]');
   for (const script of jsonLdScripts) {
     try {
       const data = JSON.parse(script.text);
       const found = findImageInJsonLd(data);
-      if (found && isUsable(found)) return found;
+      if (found) return found;
     } catch {
       // skip malformed JSON-LD; try the next script
     }
@@ -111,18 +116,21 @@ function isArticleType(typeField: unknown): boolean {
 }
 
 // `image` in JSON-LD can be a string, an object with `{ url }`, or an array of either.
+// Returns the first USABLE URL — applies isUsable() per candidate so a leading
+// relative/non-https entry in an array doesn't shadow a later valid one
+// (Codex flagged this on PR #29).
 function extractImageString(img: unknown): string | null {
-  if (typeof img === "string") return img;
+  if (typeof img === "string") return isUsable(img) ? img : null;
   if (img && typeof img === "object" && !Array.isArray(img)) {
     const urlField = (img as { url?: unknown }).url;
-    if (typeof urlField === "string") return urlField;
+    return typeof urlField === "string" && isUsable(urlField) ? urlField : null;
   }
   if (Array.isArray(img)) {
     for (const i of img) {
-      if (typeof i === "string") return i;
+      if (typeof i === "string" && isUsable(i)) return i;
       if (i && typeof i === "object") {
         const urlField = (i as { url?: unknown }).url;
-        if (typeof urlField === "string") return urlField;
+        if (typeof urlField === "string" && isUsable(urlField)) return urlField;
       }
     }
   }
