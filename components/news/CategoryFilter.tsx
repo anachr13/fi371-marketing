@@ -7,7 +7,7 @@ export default function CategoryFilter({ active }: { active: NewsCategorySlug | 
     <Link
       key={href}
       href={href}
-      className={`font-mono text-[12px] px-3 py-1.5 rounded-full border transition-colors ${
+      className={`inline-flex items-center min-h-[44px] font-mono text-[12px] px-4 rounded-full border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
         isActive
           ? "bg-foreground text-background border-foreground"
           : "bg-transparent text-muted-foreground border-border hover:border-foreground"
