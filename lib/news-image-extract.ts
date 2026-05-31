@@ -88,8 +88,50 @@ function isUsable(url: string): boolean {
   }
 }
 
-// Walk a JSON-LD value looking for an `image` field. The value can be a string,
-// an object with `{ url }`, an array of either, or nested under `@graph`.
+// schema.org types we treat as "this node's image is the article thumbnail."
+// Publishers commonly include Organization/WebSite/Publisher nodes alongside the
+// article in an @graph; those nodes' `image` is the publisher logo, NOT the
+// article hero, so we skip them.
+const ARTICLE_TYPES: ReadonlySet<string> = new Set([
+  "Article",
+  "NewsArticle",
+  "BlogPosting",
+  "Report",
+  "ScholarlyArticle",
+  "TechArticle",
+  "SocialMediaPosting",
+]);
+
+function isArticleType(typeField: unknown): boolean {
+  if (typeof typeField === "string") return ARTICLE_TYPES.has(typeField);
+  if (Array.isArray(typeField)) {
+    return typeField.some((t) => typeof t === "string" && ARTICLE_TYPES.has(t));
+  }
+  return false;
+}
+
+// `image` in JSON-LD can be a string, an object with `{ url }`, or an array of either.
+function extractImageString(img: unknown): string | null {
+  if (typeof img === "string") return img;
+  if (img && typeof img === "object" && !Array.isArray(img)) {
+    const urlField = (img as { url?: unknown }).url;
+    if (typeof urlField === "string") return urlField;
+  }
+  if (Array.isArray(img)) {
+    for (const i of img) {
+      if (typeof i === "string") return i;
+      if (i && typeof i === "object") {
+        const urlField = (i as { url?: unknown }).url;
+        if (typeof urlField === "string") return urlField;
+      }
+    }
+  }
+  return null;
+}
+
+// Walk a JSON-LD value looking for an `image` field on an Article-typed node.
+// Handles arrays, @graph nesting, and the multi-shape `image` value. Returns
+// null when no article node has an image (caller falls through to link[rel=image_src]).
 function findImageInJsonLd(node: unknown): string | null {
   if (!node || typeof node !== "object") return null;
   if (Array.isArray(node)) {
@@ -100,22 +142,9 @@ function findImageInJsonLd(node: unknown): string | null {
     return null;
   }
   const obj = node as Record<string, unknown>;
-  if ("image" in obj) {
-    const img = obj.image;
-    if (typeof img === "string") return img;
-    if (img && typeof img === "object" && !Array.isArray(img)) {
-      const urlField = (img as { url?: unknown }).url;
-      if (typeof urlField === "string") return urlField;
-    }
-    if (Array.isArray(img)) {
-      for (const i of img) {
-        if (typeof i === "string") return i;
-        if (i && typeof i === "object") {
-          const urlField = (i as { url?: unknown }).url;
-          if (typeof urlField === "string") return urlField;
-        }
-      }
-    }
+  if (isArticleType(obj["@type"]) && "image" in obj) {
+    const extracted = extractImageString(obj.image);
+    if (extracted) return extracted;
   }
   if ("@graph" in obj) {
     const found = findImageInJsonLd(obj["@graph"]);
