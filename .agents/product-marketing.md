@@ -156,6 +156,6 @@ Pulled from the on-site FAQs.
 ## Goals
 **Business goal:** Pre-launch demand generation — build awareness and pipeline, and book demos with European audit firms ahead of / around launch.
 
-**Key conversion action:** Book a Demo (primary). Secondary: Preview a Scenario / Evaluate the AI (the `app.fi371.com` wizard), Get Pricing, Request Info.
+**Key conversion action:** Book a Demo (primary). Secondary: Get Pricing, Request Info. (The old "Preview a Scenario" / "Evaluate the AI" links to the `app.fi371.com` legacy wizard were removed from the site on 2026-09-14 — don't reintroduce them.)
 
 **Current metrics:** ⚠️ CONFIRM (traffic, demo requests, conversion rate — if tracked).

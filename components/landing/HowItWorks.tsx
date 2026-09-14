@@ -1,6 +1,5 @@
 "use client";
-import { UserPlus, Database, Bot, Eye, CheckCircle, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { UserPlus, Database, Bot, Eye, CheckCircle } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
 
 const steps = [
@@ -46,21 +45,6 @@ const HowItWorks = () => (
           </AnimatedSection>
         ))}
       </div>
-
-      <AnimatedSection delay={0.2}>
-        <div className="mt-12 flex justify-center">
-          <Button
-            asChild
-            size="lg"
-            className="gradient-cta text-primary-foreground font-semibold border-0 hover:opacity-95 hover:shadow-glow text-base px-8"
-          >
-            <a href="https://app.fi371.com/wizard/index-v2-5.html" target="_blank" rel="noopener noreferrer">
-              See it in action
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </a>
-          </Button>
-        </div>
-      </AnimatedSection>
     </div>
   </section>
 );
